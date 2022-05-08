@@ -1,12 +1,18 @@
 {
-  "name": "node-wechat",
-  "private": true,
-  "version": "1.0.0",
+  "name": "node-wx-api",
+  "version": "1.0.3",
   "description": "node wechat-server api.",
   "license": "MIT",
-  "main": "dist/index.min.js",
-  "files": [
-    "dist"
+  "author": "peiwei.z",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/peiwei-z/node-wechat.git"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "keywords": [
+    "wechat",
+    "wx"
   ],
   "scripts": {
     "prebuild": "rimraf dist",
@@ -22,10 +28,6 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/peiwei-z/node-wechat.git"
   },
   "dependencies": {
     "@nestjs/common": "^8.1.1",

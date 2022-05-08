@@ -1,24 +1,42 @@
 module.exports = {
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    project: 'tsconfig.json',
-    sourceType: 'module',
+  'env': {
+    'browser': true,
+    'es2021': true,
   },
-  plugins: ['@typescript-eslint/eslint-plugin'],
-  extends: [
+  'extends': [
+    'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
-    'plugin:prettier/recommended',
   ],
-  root: true,
-  env: {
-    node: true,
-    jest: true,
+  'parser': '@typescript-eslint/parser',
+  'parserOptions': {
+    'ecmaVersion': 13,
   },
-  ignorePatterns: ['.eslintrc.js'],
-  rules: {
-    '@typescript-eslint/interface-name-prefix': 'off',
-    '@typescript-eslint/explicit-function-return-type': 'off',
-    '@typescript-eslint/explicit-module-boundary-types': 'off',
-    '@typescript-eslint/no-explicit-any': 'off',
+  'plugins': [
+    '@typescript-eslint',
+  ],
+  'rules': {
+    'indent': ['error', 2],
+    'linebreak-style': ['error', 'unix'],
+    'quotes': ['error', 'single'],
+    'semi': ['error', 'always'],
+    'camelcase': ['error'],
+    'no-multi-spaces': ['error', {
+      'ignoreEOLComments': true,
+    }],
+    'space-before-blocks': ['error'],
+    'keyword-spacing': ['error'],
+    'space-before-function-paren': ['error', 'always'],
+    'comma-spacing': ['error', {
+      'after': true,
+    }],
+    'comma-dangle': ['error', {
+      'imports': 'always-multiline',
+      'exports': 'always-multiline',
+      'arrays': 'always-multiline',
+      'objects': 'always-multiline',
+      'functions': 'always-multiline',
+    }],
+    'eqeqeq': ['error', 'always'],
+    'complexity': ['error', { max: 12 }],
   },
 };
