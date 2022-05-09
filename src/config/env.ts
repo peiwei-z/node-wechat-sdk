@@ -2,12 +2,12 @@
  * @Author: peiwei.zhu
  * @Date: 2022-05-08 18:26:14
  * @Last Modified by: peiwei.zhu
- * @Last Modified time: 2022-05-08 22:42:20
+ * @Last Modified time: 2022-05-09 19:17:09
  */
 import path from "path";
 import dotenv from "dotenv";
 
-const envPath = `${__dirname}/../../..`;
+const envPath = `${__dirname}/../..`;
 
 let dotenvOutput: dotenv.DotenvConfigOutput = {};
 dotenvOutput = dotenv.config({

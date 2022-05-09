@@ -1,1 +1,1 @@
-export * from "./test/test.module";
+export * from "./mini-program";

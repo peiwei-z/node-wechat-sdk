@@ -1,1 +1,1 @@
-export const TEST_MODULE_OPTIONS = "TestModuleOptions";
+export const WECHAT_MODULE_CONFIG = "WechatModuleConfig";
