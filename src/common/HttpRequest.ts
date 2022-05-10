@@ -2,7 +2,7 @@
  * @Author: peiwei.zhu
  * @Date: 2022-05-06 14:58:06
  * @Last Modified by: peiwei.zhu
- * @Last Modified time: 2022-05-09 19:21:35
+ * @Last Modified time: 2022-05-10 15:12:17
  */
 import fetch from "node-fetch";
 
@@ -30,7 +30,7 @@ export class HttpRequest {
         return new Error(response);
       }
     } catch (error) {
-      return error as Error;
+      return new Error(error);
     }
   }
 }

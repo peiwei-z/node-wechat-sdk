@@ -2,7 +2,7 @@
  * @Author: peiwei.zhu
  * @Date: 2022-05-09 14:58:24
  * @Last Modified by: peiwei.zhu
- * @Last Modified time: 2022-05-09 19:17:29
+ * @Last Modified time: 2022-05-10 14:43:19
  */
 import Redis from "ioredis";
 import Config from "../../config";
@@ -14,7 +14,7 @@ export const redisClient = new Redis(
   {
     password: Config.REDIS_PASSWORD,
     db: Config.REDIS_DB ? parseInt(Config.REDIS_DB, 10) : 1,
-    keyPrefix: `${Config.APP_NAME}:`,
+    keyPrefix: "",
   }
 );
 export class RedisCache extends CacheBase {

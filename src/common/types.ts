@@ -1,4 +1,5 @@
 import { ModuleMetadata, Type, Abstract } from "@nestjs/common";
+import { CacheBase } from "./cache";
 
 export interface WechatModuleOptions {
   /**
@@ -17,6 +18,11 @@ export interface WechatModuleOptions {
    * OfficialAccount | MiniProgram
    */
   token?: string;
+
+  /**
+   * 缓存器
+   */
+  cache?: CacheBase;
 }
 
 export interface ModuleForRootAsyncOptions

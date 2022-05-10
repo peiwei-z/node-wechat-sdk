@@ -2,7 +2,7 @@
  * @Author: peiwei.zhu
  * @Date: 2022-05-06 14:31:59
  * @Last Modified by: peiwei.zhu
- * @Last Modified time: 2022-05-09 17:43:14
+ * @Last Modified time: 2022-05-10 15:39:46
  */
 
 import { DynamicModule, Module, Provider } from "@nestjs/common";
