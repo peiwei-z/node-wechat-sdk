@@ -41,4 +41,10 @@ export class AppController {
     };
     return this.miniService.SubscribeMessage.send(data);
   }
+
+  @Get("getUnlimited")
+  async getUnlimited() {
+    console.log(await this.miniService.getToken());
+    console.log(await this.miniService.QRCode.getUnlimited({ scene: "123" }));
+  }
 }

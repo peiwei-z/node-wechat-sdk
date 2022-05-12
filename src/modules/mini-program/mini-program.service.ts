@@ -9,12 +9,14 @@ import { WechatModuleOptions } from "../../common/types";
 import { AccessTokenOptions } from "../../interfaces";
 import { WechatService } from "../../wechat.service";
 import { AuthService } from "./auth/auth.service";
+import { QRCodeService } from "./qrcode/qrcode.service";
 import { SubscribeMessageService } from "./subscribe-message/subscribe-message.service";
 
 @Injectable()
 export class MiniProgramService extends WechatService {
   public readonly Auth: AuthService;
   public readonly SubscribeMessage: SubscribeMessageService;
+  public readonly QRCode: QRCodeService;
 
   constructor(options: WechatModuleOptions) {
     super(options);
@@ -22,6 +24,7 @@ export class MiniProgramService extends WechatService {
     this.appSecret = options.appSecret;
 
     this.Auth = new AuthService(this);
+    this.QRCode = new QRCodeService(this);
     this.SubscribeMessage = new SubscribeMessageService(this);
   }
 

@@ -1,0 +1,8 @@
+src/
+test/
+.DS_Store
+.gitignore
+.npmignore
+
+.idea
+.vscode

@@ -2,33 +2,24 @@
  * @Author: peiwei.zhu
  * @Date: 2022-05-06 14:58:06
  * @Last Modified by: peiwei.zhu
- * @Last Modified time: 2022-05-10 15:12:17
+ * @Last Modified time: 2022-05-12 17:16:35
  */
 import fetch from "node-fetch";
+import { RequestPayload } from "./types";
 
 export class HttpRequest {
-  async httpRequest(
-    url: string,
-    payload?: { body?: object; headers?: object },
-    method?: string
-  ) {
+  async httpRequest(url: string, payload: RequestPayload) {
     const config = {
-      method: method || (payload?.body ? "POST" : "GET"),
+      method: payload.method,
       headers: {
-        Accept: "application/json",
         "Content-Type": "application/json",
-        ...payload?.headers,
+        ...payload.headers,
       },
-      body: payload?.body ? JSON.stringify(payload.body) : null,
+      body: payload.body ? JSON.stringify(payload.body) : null,
     };
 
     try {
-      const response = await fetch(url, config);
-      if (response.ok) {
-        return response.json();
-      } else {
-        return new Error(response);
-      }
+      return fetch(url, config);
     } catch (error) {
       return new Error(error);
     }

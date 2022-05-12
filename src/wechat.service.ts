@@ -2,7 +2,7 @@
  * @Author: peiwei.zhu
  * @Date: 2022-05-06 14:58:06
  * @Last Modified by: peiwei.zhu
- * @Last Modified time: 2022-05-10 15:48:24
+ * @Last Modified time: 2022-05-12 17:16:07
  */
 import { Injectable } from "@nestjs/common";
 import queryString from "query-string";
@@ -80,15 +80,18 @@ export abstract class WechatService extends HttpRequest {
     return this.getToken(true);
   }
 
-  protected async requestToken(
-    credentials: AccessTokenOptions
-  ): Promise<AccessToken> {
+  protected async requestToken(credentials: AccessTokenOptions): Promise<any> {
     const url = `${this.domain}${this.tokenPath}?${queryString.stringify(
       credentials
     )}`;
 
     try {
-      return this.httpRequest(url);
+      const response = await this.httpRequest(url, { method: "POST" });
+      if (response.ok) {
+        return response.json();
+      } else {
+        return new Error(response);
+      }
     } catch (err) {
       throw new Error(err);
     }

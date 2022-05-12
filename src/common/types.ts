@@ -35,3 +35,10 @@ export interface ModuleForRootAsyncOptions
    */
   inject?: (string | symbol | Function | Type<any> | Abstract<any>)[];
 }
+
+export interface RequestPayload {
+  method: string;
+  body?: object;
+  headers?: object;
+  params?: object;
+}
