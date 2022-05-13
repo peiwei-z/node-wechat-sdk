@@ -15,8 +15,9 @@ import { MiniProgramService } from "./mini-program.service";
 
 @Module({})
 export class MiniProgramModule {
-  static forRoot(options: WechatModuleOptions) {
+  static forRoot(options: WechatModuleOptions): DynamicModule {
     return {
+      global: true,
       module: MiniProgramModule,
       providers: [
         {
@@ -28,7 +29,7 @@ export class MiniProgramModule {
     };
   }
 
-  static forRootAsync(options: ModuleForRootAsyncOptions) {
+  static forRootAsync(options: ModuleForRootAsyncOptions): DynamicModule {
     const providers: Provider[] = [];
     if (options.useFactory) {
       providers.push({
@@ -45,8 +46,9 @@ export class MiniProgramModule {
       },
     });
     return {
+      global: true,
       module: MiniProgramModule,
-      imports: options.imports,
+      imports: [...(options.imports || [])],
       providers,
       exports: [MiniProgramService],
     };

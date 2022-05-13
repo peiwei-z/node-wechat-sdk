@@ -33,6 +33,6 @@ export class AuthService extends BaseService {
    * @returns
    */
   public async getPhoneNumber(code: string): Promise<PhoneNumberResult> {
-    return this.httpGet("/wxa/business/getuserphonenumber", { code });
+    return this.httpPost("/wxa/business/getuserphonenumber", { code });
   }
 }
