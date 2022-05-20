@@ -1,1 +1,1 @@
-# node-wechat
+# node-wx-api
