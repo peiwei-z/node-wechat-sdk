@@ -1,13 +1,9 @@
 {
   "name": "node-wx-api",
-  "version": "1.0.6",
+  "version": "1.0.9",
   "description": "node wechat-server api.",
   "license": "MIT",
   "author": "peiwei.z",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/peiwei-z/node-wx-api.git"
-  },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "keywords": [

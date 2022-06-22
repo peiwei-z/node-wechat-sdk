@@ -65,7 +65,7 @@ export abstract class WechatService extends HttpRequest {
     const cacheKey = await this.getCacheKey();
 
     if (this.cache) {
-      await this.cache.set(cacheKey, data, data.expires_in - 1);
+      await this.cache.set(cacheKey, data, data.expires_in - 100);
     }
 
     return this;

@@ -14,20 +14,23 @@ import { WechatService } from "./wechat.service";
 @Injectable()
 export abstract class BaseService extends HttpRequest {
   protected app: WechatService;
+  protected count: number;
 
   constructor(wechatService: WechatService) {
     super();
     this.app = wechatService;
+    this.count = 0;
   }
 
   async request(
     url: string,
     payload: RequestPayload,
-    returnResponse?: boolean
+    returnResponse?: boolean,
+    refresh?: boolean
   ): Promise<any> {
     const queryParams = {
       ...payload.params,
-      access_token: (await this.app.getToken()).access_token,
+      access_token: (await this.app.getToken(refresh)).access_token,
     };
     const fetchUrl = `${this.app.domain}${url}?${queryString.stringify(
       queryParams
@@ -35,7 +38,15 @@ export abstract class BaseService extends HttpRequest {
 
     const response = await this.httpRequest(fetchUrl, payload);
     if (response.ok) {
-      return returnResponse ? response : response.json();
+      const ret = returnResponse ? response : await response.json();
+      console.log(ret, "refresh:count:" + this.count);
+      if (ret?.errcode === 40001 && this.count < 5) {
+        this.count++;
+        this.request(url, payload, returnResponse, true);
+      } else {
+        this.count = 0;
+      }
+      return ret;
     } else {
       return new Error(response);
     }
