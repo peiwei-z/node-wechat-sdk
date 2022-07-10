@@ -2,7 +2,7 @@
  * @Author: peiwei.zhu
  * @Date: 2022-05-06 18:42:34
  * @Last Modified by: peiwei.zhu
- * @Last Modified time: 2022-05-12 15:50:43
+ * @Last Modified time: 2022-07-09 22:19:15
  */
 
 export interface QRCodeOptions {
@@ -26,4 +26,80 @@ export interface GetUnlimitedQRCodeOptions extends QRCodeOptions {
 
 export interface GetQRCodeOptions extends QRCodeOptions {
   path: string; // 是	扫码进入的小程序页面路径，最大长度 128 字节，不能为空；对于小游戏，可以只传入 query 部分，来实现传参效果，如：传入 "?foo=bar"，即可在 wx.getLaunchOptionsSync 接口中的 query 参数获取到 {foo:"bar"}。
+}
+
+export interface TemplateData {
+  [key: string]: { value: string; color?: string };
+}
+
+export interface SubscribeMessageOptions {
+  touser: string;
+
+  template_id: string;
+
+  data: TemplateData;
+
+  page?: string;
+
+  url?: string;
+
+  miniprogram?: { appid: string; pagepath?: string };
+
+  color?: string;
+
+  lang?: string;
+}
+
+export interface Payer {
+  openid: string;
+}
+
+export interface PayGoodsDetail {
+  merchant_goods_id: string;
+  wechatpay_goods_id?: string;
+  goods_name?: string;
+  quantity: number;
+  unit_price: number;
+}
+
+export interface PayDetail {
+  cost_price?: number;
+  invoice_id?: string;
+  goods_detail?: PayGoodsDetail[];
+}
+
+export interface StoreInfo {
+  id: string;
+  name?: string;
+  area_code?: string;
+  address?: string;
+}
+
+export interface SceneInfo {
+  payer_client_ip: string;
+  device_id?: string;
+  store_info?: StoreInfo;
+}
+
+export interface SettleInfo {
+  profit_sharing?: boolean;
+}
+
+export interface JSAPIOptions {
+  appid: string;
+  mchid: string;
+  description: string;
+  out_trade_no: string;
+  amount: {
+    total: number;
+    currency?: string;
+  };
+  notify_url: string;
+  payer: Payer;
+  time_expire?: string;
+  attach?: string;
+  goods_tag?: string;
+  detail?: PayDetail;
+  scene_info?: SceneInfo;
+  settle_info?: SettleInfo;
 }

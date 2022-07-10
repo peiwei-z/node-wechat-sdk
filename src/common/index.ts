@@ -2,11 +2,11 @@
  * @Author: peiwei.zhu
  * @Date: 2022-05-09 10:47:25
  * @Last Modified by: peiwei.zhu
- * @Last Modified time: 2022-05-09 13:46:14
+ * @Last Modified time: 2022-07-09 14:21:58
  */
 export * from "./cache";
 export * from "./HttpRequest";
-export * from "./Util";
+export * from "./Utils";
 import * as constants from "./constants";
 
 import { RedisCache, redisClient } from "./cache";

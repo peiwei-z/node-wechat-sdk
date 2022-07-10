@@ -2,52 +2,58 @@
  * @Author: peiwei.zhu
  * @Date: 2022-05-06 14:58:06
  * @Last Modified by: peiwei.zhu
- * @Last Modified time: 2022-05-12 17:16:07
+ * @Last Modified time: 2022-07-09 22:00:54
  */
 import { Injectable } from "@nestjs/common";
 import queryString from "query-string";
-import { AccessTokenOptions, AccessToken } from "./interfaces";
+import { AccessTokenResponse, CertificateInfo } from "./common/interfaces";
 import {
   HttpRequest,
-  Util,
   redisCacheInstance,
-  RedisCache,
   CacheBase,
+  createHash,
 } from "./common";
 import { WechatModuleOptions } from "./common/types";
 
 @Injectable()
 export abstract class WechatService extends HttpRequest {
-  public readonly domain: string;
-
-  protected readonly tokenPath: string;
-  protected readonly cacheKeyPrefix: string;
-  protected cache: CacheBase = redisCacheInstance;
-
+  public domain: string;
   public appId: string;
+  public mchId: string;
   public appSecret: string;
+  public tokenPath: string;
+  public cacheKeyPrefix: string;
+  public privateKeyPath: string;
+  public serialNo: string;
+  public apiV3Key: string;
+  public certs: CertificateInfo[];
+  public needVerify: boolean;
+
+  public cache: CacheBase = redisCacheInstance;
 
   constructor(options: WechatModuleOptions) {
     super();
-
-    this.domain = "https://api.weixin.qq.com";
-    this.cacheKeyPrefix = "wechat:access_token";
-    this.tokenPath = "/cgi-bin/token";
-
-    if (options.cache) {
+    if (options.cache && !this.cache) {
       this.cache = options.cache;
     }
   }
 
-  abstract getCredentials(): Promise<AccessTokenOptions>;
+  abstract getCredentials(): any;
+
+  public offsetSet(id: string, value: any): void {
+    if (value) {
+      value = value(this);
+    }
+    this[id] = value;
+  }
 
   async getCacheKey(): Promise<string> {
     const credentials = await this.getCredentials();
-    return `${this.cacheKeyPrefix}:${Util.md5(JSON.stringify(credentials))}`;
+    return `${this.cacheKeyPrefix}:${createHash(JSON.stringify(credentials))}`;
   }
 
   // 获取Token
-  async getToken(refresh?: boolean): Promise<AccessToken> {
+  async getToken(refresh?: boolean): Promise<AccessTokenResponse> {
     if (!refresh && this.cache) {
       const cacheKey = await this.getCacheKey();
       const token = await this.cache.get(cacheKey);
@@ -61,7 +67,7 @@ export abstract class WechatService extends HttpRequest {
     return ret;
   }
 
-  protected async setToken(data: AccessToken): Promise<this> {
+  protected async setToken(data: AccessTokenResponse): Promise<this> {
     const cacheKey = await this.getCacheKey();
 
     if (this.cache) {
@@ -76,11 +82,11 @@ export abstract class WechatService extends HttpRequest {
     return this;
   }
 
-  getRefreshedToken(): Promise<AccessToken> {
+  getRefreshedToken(): Promise<AccessTokenResponse> {
     return this.getToken(true);
   }
 
-  protected async requestToken(credentials: AccessTokenOptions): Promise<any> {
+  protected async requestToken(credentials: object): Promise<any> {
     const url = `${this.domain}${this.tokenPath}?${queryString.stringify(
       credentials
     )}`;

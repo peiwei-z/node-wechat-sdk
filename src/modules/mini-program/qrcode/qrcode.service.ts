@@ -2,15 +2,15 @@
  * @Author: peiwei.zhu
  * @Date: 2022-05-06 14:58:06
  * @Last Modified by: peiwei.zhu
- * @Last Modified time: 2022-05-12 16:54:54
+ * @Last Modified time: 2022-07-09 20:58:12
  */
 import { Injectable } from "@nestjs/common";
 import {
   CreateQRCodeOptions,
-  DefaultError,
+  DefaultResponse,
   GetQRCodeOptions,
   GetUnlimitedQRCodeOptions,
-} from "src/interfaces";
+} from "src/common/interfaces";
 import { BaseService } from "src/base.service";
 
 @Injectable()
@@ -23,7 +23,7 @@ export class QRCodeService extends BaseService {
    */
   public async createQRCode(
     data: CreateQRCodeOptions
-  ): Promise<Buffer | DefaultError> {
+  ): Promise<Buffer | DefaultResponse> {
     return this.requestRaw("/cgi-bin/wxaapp/createwxaqrcode", data);
   }
 
@@ -33,7 +33,7 @@ export class QRCodeService extends BaseService {
    * @param data
    * @returns
    */
-  public async get(data: GetQRCodeOptions): Promise<Buffer | DefaultError> {
+  public async get(data: GetQRCodeOptions): Promise<Buffer | DefaultResponse> {
     return this.requestRaw("/wxa/getwxacode", data);
   }
 
@@ -45,7 +45,7 @@ export class QRCodeService extends BaseService {
    */
   public async getUnlimited(
     data: GetUnlimitedQRCodeOptions
-  ): Promise<Buffer | DefaultError> {
+  ): Promise<Buffer | DefaultResponse> {
     return this.requestRaw("/wxa/getwxacodeunlimit", data);
   }
 }

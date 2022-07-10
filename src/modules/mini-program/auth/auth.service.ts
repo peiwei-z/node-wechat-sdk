@@ -2,10 +2,13 @@
  * @Author: peiwei.zhu
  * @Date: 2022-05-06 14:58:06
  * @Last Modified by: peiwei.zhu
- * @Last Modified time: 2022-05-12 16:43:23
+ * @Last Modified time: 2022-07-09 15:19:45
  */
 import { Injectable } from "@nestjs/common";
-import { AuthSession, PhoneNumberResult } from "src/interfaces";
+import {
+  AuthSessionResponse,
+  PhoneNumberResponse,
+} from "src/common/interfaces";
 import { BaseService } from "src/base.service";
 
 @Injectable()
@@ -16,7 +19,7 @@ export class AuthService extends BaseService {
    * @param code
    * @returns
    */
-  public async session(code: string): Promise<AuthSession> {
+  public async session(code: string): Promise<AuthSessionResponse> {
     const params = {
       appid: this.app.appId,
       secret: this.app.appSecret,
@@ -32,7 +35,7 @@ export class AuthService extends BaseService {
    * @param code
    * @returns
    */
-  public async getPhoneNumber(code: string): Promise<PhoneNumberResult> {
+  public async getPhoneNumber(code: string): Promise<PhoneNumberResponse> {
     return this.httpPost("/wxa/business/getuserphonenumber", { code });
   }
 }

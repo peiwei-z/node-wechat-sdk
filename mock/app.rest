@@ -1,0 +1,67 @@
+@hostname = localhost
+@port = 3000
+@host = {{hostname}}:{{port}}
+@contentType = application/json
+@authorization = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiIiwiaWQiOjUsImlhdCI6MTY1NjIyNTI0MSwiZXhwIjoxNjYyMjI1MjQxfQ.Crlk_kzHS4cmFOBwQUMf5GEMjH_6ErTNfdZoEzZRefE
+@apiPrefix = 
+@resources = /
+
+###
+GET http://{{host}}/auth?code=073TQXkl2zVhv94IGcnl2OvJ7j2TQXkg HTTP/1.1
+Authorization: {{authorization}}
+content-type: {{contentType}}
+
+###
+GET http://{{host}}/getUnlimited?=scene=123 HTTP/1.1
+Authorization: {{authorization}}
+content-type: {{contentType}}
+
+
+###
+POST http://{{host}}/sendTemplateMessage HTTP/1.1
+Authorization: {{authorization}}
+content-type: {{contentType}}
+
+{
+  "touser": "oOwmw5VrWRQsY9GVaPEnnBEl7ScM",
+  "template_id": "TEMPLATE_ID",
+  "page": "index",
+  "miniprogram_state": "developer",
+  "lang": "zh_CN",
+  "data": {
+    "number01": {
+      "value": "339208499"
+    },
+    "date01": {
+      "value": "2015年01月05日"
+    },
+    "site01": {
+      "value": "TIT创意园"
+    },
+    "site02": {
+      "value": "广州市新港中路397号"
+    }
+  }
+}
+
+###
+POST http://{{host}}/jsapi HTTP/1.1
+Authorization: {{authorization}}
+content-type: {{contentType}}
+
+{
+  "description": "string",
+  "out_trade_no": "string",
+  "amount": {
+    "total": 100
+  },
+  "notify_url": "https://hxorganization-dev.sumian.tech/",
+  "payer": {
+    "openid": "oOwmw5VrWRQsY9GVaPEnnBEl7ScM"
+  }
+}
+
+###
+GET http://{{host}}/certificates HTTP/1.1
+Authorization: {{authorization}}
+content-type: {{contentType}}

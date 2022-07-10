@@ -1,6 +1,6 @@
 import { Module } from "@nestjs/common";
-import { AppController } from "./app.controller";
-import { MiniProgramModule } from "./modules";
+import { AppController } from "./wechat.controller";
+import { MiniProgramModule, PaymentModule } from "./modules";
 
 @Module({
   imports: [
@@ -12,6 +12,14 @@ import { MiniProgramModule } from "./modules";
       useFactory: () => ({
         appId: process.env.MINI_PROGRAM_APP_ID,
         appSecret: process.env.MINI_PROGRAM_APP_SECRET,
+      }),
+    }),
+    PaymentModule.forRootAsync({
+      useFactory: () => ({
+        appId: process.env.MINI_PROGRAM_APP_ID,
+        mchId: process.env.MCH_ID,
+        privateKeyPath: process.env.PRIVATE_KEY_PATH,
+        serialNo: process.env.SERIAL_NO,
       }),
     }),
   ],

@@ -2,10 +2,9 @@
  * @Author: peiwei.zhu
  * @Date: 2022-05-06 14:58:06
  * @Last Modified by: peiwei.zhu
- * @Last Modified time: 2022-05-12 17:16:44
+ * @Last Modified time: 2022-07-10 14:14:42
  */
 import { Injectable } from "@nestjs/common";
-import { url } from "inspector";
 import queryString from "query-string";
 import { HttpRequest } from "./common";
 import { RequestPayload } from "./common/types";
@@ -25,7 +24,7 @@ export abstract class BaseService extends HttpRequest {
   async request(
     url: string,
     payload: RequestPayload,
-    returnResponse?: boolean,
+    returnRaw?: boolean,
     refresh?: boolean
   ): Promise<any> {
     const queryParams = {
@@ -38,36 +37,40 @@ export abstract class BaseService extends HttpRequest {
 
     const response = await this.httpRequest(fetchUrl, payload);
     if (response.ok) {
-      const ret = returnResponse ? response : await response.json();
-      console.log(ret, "refresh:count:" + this.count);
+      const ret = returnRaw ? response : await response.json();
+      console.log(ret, "refresh_access_token_count:" + this.count);
       if (ret?.errcode === 40001 && this.count < 5) {
         this.count++;
-        this.request(url, payload, returnResponse, true);
+        this.request(url, payload, returnRaw, true);
       } else {
         this.count = 0;
       }
-      return ret;
+
+      if (returnRaw) {
+        return ret.arrayBuffer();
+      } else {
+        const { errcode, errmsg } = ret;
+        delete ret.errcode;
+        delete ret.errmsg;
+        return {
+          data: errcode ? null : ret,
+          code: errcode || 0,
+          message: errmsg || "",
+        };
+      }
     } else {
       return new Error(response);
     }
   }
 
   async requestRaw(url: string, data: object): Promise<any> {
-    const response = await this.request(
-      url,
-      {
-        body: data,
-        method: "POST",
-      },
-      true
-    );
-    return response.arrayBuffer();
+    return this.request(url, { body: data, method: "POST" }, true);
   }
 
   async httpGet(url: string, params: object): Promise<any> {
     return this.request(url, {
       params,
-      method: "POST",
+      method: "GET",
     });
   }
 

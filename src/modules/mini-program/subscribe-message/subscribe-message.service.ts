@@ -2,11 +2,14 @@
  * @Author: peiwei.zhu
  * @Date: 2022-05-06 14:58:06
  * @Last Modified by: peiwei.zhu
- * @Last Modified time: 2022-05-12 16:45:44
+ * @Last Modified time: 2022-07-09 20:57:23
  */
 import { Injectable } from "@nestjs/common";
 import { BaseService } from "src/base.service";
-import { SubscribeMessage, DefaultError } from "src/interfaces";
+import {
+  SubscribeMessageOptions,
+  DefaultResponse,
+} from "src/common/interfaces";
 
 @Injectable()
 export class SubscribeMessageService extends BaseService {
@@ -16,7 +19,9 @@ export class SubscribeMessageService extends BaseService {
    * @param templateData
    * @returns
    */
-  public async send(templateData: SubscribeMessage): Promise<DefaultError> {
+  public async send(
+    templateData: SubscribeMessageOptions
+  ): Promise<DefaultResponse> {
     return this.httpPost("/cgi-bin/message/subscribe/send", templateData);
   }
 }
