@@ -8,16 +8,16 @@ import { Injectable } from "@nestjs/common";
 import queryString from "query-string";
 import { HttpRequest } from "./common";
 import { RequestPayload } from "./common/types";
-import { WechatService } from "./wechat.service";
+import { ApplicationService } from "./application.service";
 
 @Injectable()
 export abstract class BaseService extends HttpRequest {
-  protected app: WechatService;
+  protected app: ApplicationService;
   protected count: number;
 
-  constructor(wechatService: WechatService) {
+  constructor(app: ApplicationService) {
     super();
-    this.app = wechatService;
+    this.app = app;
     this.count = 0;
   }
 

@@ -13,7 +13,12 @@ import {
 } from "../../common/types";
 import { MiniProgramService } from "./mini-program.service";
 
-@Module({})
+@Module({
+  imports: [],
+  controllers: [],
+  providers: [MiniProgramService],
+  exports: [MiniProgramService],
+})
 export class MiniProgramModule {
   static forRoot(options: WechatModuleOptions): DynamicModule {
     return {

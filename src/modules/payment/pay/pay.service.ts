@@ -16,7 +16,7 @@ export class PayService extends BaseService {
    * @param data
    * @returns
    */
-  public async jsapi(data: JSAPIOptions): Promise<JSAPIResponse> {
+  async jsapi(data: JSAPIOptions): Promise<JSAPIResponse> {
     data.appid = this.app.appId;
     data.mchid = this.app.mchId;
     const ret = await this.httpPost("/v3/pay/transactions/jsapi", data);

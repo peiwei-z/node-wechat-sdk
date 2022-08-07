@@ -6,14 +6,13 @@
  */
 import { Injectable } from "@nestjs/common";
 import fs from "fs";
-import { CertificateInfo } from "src/common/interfaces";
+import { ApplicationService } from "src/application.service";
 import { PaymentCredentials, WechatModuleOptions } from "../../common/types";
-import { WechatService } from "../../wechat.service";
 import { PayService } from "./pay/pay.service";
 
 @Injectable()
-export class PaymentService extends WechatService {
-  public PayService: PayService;
+export class PaymentService extends ApplicationService {
+  public Pay: PayService;
 
   constructor(options: WechatModuleOptions) {
     super(options);
@@ -45,12 +44,12 @@ export class PaymentService extends WechatService {
   }
 
   async updateCerts() {
-    this.certs = await this.PayService.getCertificates();
+    this.certs = await this.Pay.getCertificates();
   }
 
   registerProviders(): void {
-    if (!this.PayService) {
-      this.offsetSet("PayService", (app: WechatService) => {
+    if (!this.Pay) {
+      this.offsetSet("Pay", (app: ApplicationService) => {
         return new PayService(app);
       });
     }

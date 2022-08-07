@@ -4,7 +4,7 @@ import { JSAPIOptions, SubscribeMessageOptions } from "./common/interfaces";
 import { MiniProgramService, PaymentService } from "./modules";
 
 @Controller()
-export class AppController {
+export class WechatController {
   constructor(
     private readonly miniService: MiniProgramService,
     private readonly payService: PaymentService
@@ -26,12 +26,12 @@ export class AppController {
 
   @Post("jsapi")
   async jsapi(@Body() data: JSAPIOptions) {
-    return this.payService.PayService.jsapi(data);
+    return this.payService.Pay.jsapi(data);
   }
 
   @Get("certificates")
   async certificates(@Body() data: JSAPIOptions) {
-    console.log(this.payService.PayService, 123123);
-    return this.payService.PayService.httpGet("/v3/certificates", {});
+    console.log(this.payService.Pay, 123123);
+    return this.payService.Pay.httpGet("/v3/certificates", {});
   }
 }

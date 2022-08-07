@@ -25,17 +25,17 @@ import {
   PaymentCredentials,
   CipherData,
 } from "../../../common/types";
-import { WechatService } from "../../../wechat.service";
+import { ApplicationService } from "src/application.service";
 import { BaseService as Base } from "../../../base.service";
 @Injectable()
 export class BaseService extends Base {
-  protected app: WechatService;
+  protected app: ApplicationService;
   protected count: number;
   protected credentials: PaymentCredentials;
 
-  constructor(wechatService: WechatService) {
-    super(wechatService);
-    this.app = wechatService;
+  constructor(app: ApplicationService) {
+    super(app);
+    this.app = app;
     this.credentials = this.app.getCredentials();
   }
 
@@ -196,7 +196,7 @@ export class BaseService extends Base {
     const ret = await this.httpGet("/v3/certificates", {});
     let certificates = [];
     if (ret.code === 0) {
-      certificates = ret.data;
+      certificates = ret.data.data;
       certificates.map((item) => {
         const { algorithm, ciphertext, nonce, associated_data } =
           item.encrypt_certificate;
@@ -256,7 +256,7 @@ export class BaseService extends Base {
       }
     }
 
-    console.log(ret, "----------request---------");
+    console.log(ret, "----------response----------");
     if (response.status !== 200 && ret?.code) {
       return { ...ret, data: null };
     }

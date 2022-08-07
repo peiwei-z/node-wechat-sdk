@@ -6,7 +6,7 @@
  */
 export * from "./cache";
 export * from "./HttpRequest";
-export * from "./Utils";
+export * from "./utils";
 import * as constants from "./constants";
 
 import { RedisCache, redisClient } from "./cache";

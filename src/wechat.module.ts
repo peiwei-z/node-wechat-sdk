@@ -1,29 +1,26 @@
-import { Module } from "@nestjs/common";
-import { AppController } from "./wechat.controller";
-import { MiniProgramModule, PaymentModule } from "./modules";
+import { DynamicModule, Module } from "@nestjs/common";
+import { WechatController } from "./wechat.controller";
+import { WechatModuleOptions } from "./common/types";
+import { WechatService } from "./wechat.service";
 
 @Module({
-  imports: [
-    // MiniProgramModule.forRoot({
-    //   appId: "your app id",
-    //   appSecret: "your secret",
-    // }),
-    MiniProgramModule.forRootAsync({
-      useFactory: () => ({
-        appId: process.env.MINI_PROGRAM_APP_ID,
-        appSecret: process.env.MINI_PROGRAM_APP_SECRET,
-      }),
-    }),
-    PaymentModule.forRootAsync({
-      useFactory: () => ({
-        appId: process.env.MINI_PROGRAM_APP_ID,
-        mchId: process.env.MCH_ID,
-        privateKeyPath: process.env.PRIVATE_KEY_PATH,
-        serialNo: process.env.SERIAL_NO,
-      }),
-    }),
-  ],
-  controllers: [AppController],
+  imports: [],
+  controllers: [],
   providers: [],
+  exports: [],
 })
-export class AppModule {}
+export class WechatModule {
+  static forRoot(options: WechatModuleOptions): DynamicModule {
+    return {
+      global: true,
+      module: WechatModule,
+      providers: [
+        {
+          provide: WechatService,
+          useValue: new WechatService(options),
+        },
+      ],
+      exports: [WechatService],
+    };
+  }
+}

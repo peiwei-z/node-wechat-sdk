@@ -13,7 +13,12 @@ import {
 } from "../../common/types";
 import { PaymentService } from "./payment.service";
 
-@Module({})
+@Module({
+  imports: [],
+  controllers: [],
+  providers: [PaymentService],
+  exports: [PaymentService],
+})
 export class PaymentModule {
   static forRoot(options: WechatModuleOptions): DynamicModule {
     return {

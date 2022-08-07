@@ -5,17 +5,17 @@
  * @Last Modified time: 2022-07-09 22:01:18
  */
 import { Injectable } from "@nestjs/common";
+import { ApplicationService } from "src/application.service";
 import {
   MiniProgramCredentials,
   WechatModuleOptions,
 } from "../../common/types";
-import { WechatService } from "../../wechat.service";
 import { AuthService } from "./auth/auth.service";
 import { QRCodeService } from "./qrcode/qrcode.service";
 import { SubscribeMessageService } from "./subscribe-message/subscribe-message.service";
 
 @Injectable()
-export class MiniProgramService extends WechatService {
+export class MiniProgramService extends ApplicationService {
   public Auth: AuthService;
   public SubscribeMessage: SubscribeMessageService;
   public QRCode: QRCodeService;
@@ -42,19 +42,19 @@ export class MiniProgramService extends WechatService {
 
   registerProviders(): void {
     if (!this.Auth) {
-      this.offsetSet("Auth", (app: WechatService) => {
+      this.offsetSet("Auth", (app: ApplicationService) => {
         return new AuthService(app);
       });
     }
 
     if (!this.QRCode) {
-      this.offsetSet("QRCode", (app: WechatService) => {
+      this.offsetSet("QRCode", (app: ApplicationService) => {
         return new QRCodeService(app);
       });
     }
 
     if (!this.SubscribeMessage) {
-      this.offsetSet("SubscribeMessage", (app: WechatService) => {
+      this.offsetSet("SubscribeMessage", (app: ApplicationService) => {
         return new SubscribeMessageService(app);
       });
     }

@@ -1,8 +1,8 @@
 import { NestFactory } from "@nestjs/core";
-import { AppModule } from "./wechat.module";
+import { WechatModule } from "./wechat.module";
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(WechatModule);
   await app.listen(3000);
 }
 bootstrap();
