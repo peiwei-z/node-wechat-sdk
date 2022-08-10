@@ -16,9 +16,9 @@ import { SubscribeMessageService } from "./subscribe-message/subscribe-message.s
 
 @Injectable()
 export class MiniProgramService extends ApplicationService {
-  public Auth: AuthService;
-  public SubscribeMessage: SubscribeMessageService;
-  public QRCode: QRCodeService;
+  public auth: AuthService;
+  public subscribeMessage: SubscribeMessageService;
+  public qrcode: QRCodeService;
 
   constructor(options: WechatModuleOptions) {
     super(options);
@@ -41,20 +41,20 @@ export class MiniProgramService extends ApplicationService {
   }
 
   registerProviders(): void {
-    if (!this.Auth) {
-      this.offsetSet("Auth", (app: ApplicationService) => {
+    if (!this.auth) {
+      this.offsetSet("auth", (app: ApplicationService) => {
         return new AuthService(app);
       });
     }
 
-    if (!this.QRCode) {
-      this.offsetSet("QRCode", (app: ApplicationService) => {
+    if (!this.qrcode) {
+      this.offsetSet("qrcode", (app: ApplicationService) => {
         return new QRCodeService(app);
       });
     }
 
-    if (!this.SubscribeMessage) {
-      this.offsetSet("SubscribeMessage", (app: ApplicationService) => {
+    if (!this.subscribeMessage) {
+      this.offsetSet("subscribeMessage", (app: ApplicationService) => {
         return new SubscribeMessageService(app);
       });
     }

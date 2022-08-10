@@ -1,1 +1,1 @@
-# node-wx-api
+# 微信公众平台 sdk

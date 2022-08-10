@@ -12,7 +12,7 @@ import { PayService } from "./pay/pay.service";
 
 @Injectable()
 export class PaymentService extends ApplicationService {
-  public Pay: PayService;
+  public pay: PayService;
 
   constructor(options: WechatModuleOptions) {
     super(options);
@@ -39,17 +39,19 @@ export class PaymentService extends ApplicationService {
       serialNo: this.serialNo,
       apiV3Key: this.apiV3Key,
       certs: this.certs,
-      privateKey: fs.readFileSync(this.privateKeyPath),
+      privateKey: this.privateKeyPath
+        ? fs.readFileSync(this.privateKeyPath)
+        : "",
     };
   }
 
-  async updateCerts() {
-    this.certs = await this.Pay.getCertificates();
+  async updateCerts(): Promise<void> {
+    this.certs = await this.pay.getCertificates();
   }
 
   registerProviders(): void {
-    if (!this.Pay) {
-      this.offsetSet("Pay", (app: ApplicationService) => {
+    if (!this.pay) {
+      this.offsetSet("pay", (app: ApplicationService) => {
         return new PayService(app);
       });
     }

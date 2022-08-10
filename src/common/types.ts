@@ -99,7 +99,7 @@ export interface PaymentCredentials {
   serialNo: string;
   apiV3Key: string;
   certs: object[];
-  privateKey: Buffer;
+  privateKey: Buffer | string;
 }
 
 export interface CipherData {

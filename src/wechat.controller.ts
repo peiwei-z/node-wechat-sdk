@@ -11,27 +11,27 @@ export class WechatController {
   ) {}
   @Get("auth")
   auth(@Query() query: { code: string }) {
-    return this.miniService.Auth.session(query.code);
+    return this.miniService.auth.getSession(query.code);
   }
 
   @Post("sendTemplateMessage")
   sendTemplateMessage(@Body() data: SubscribeMessageOptions) {
-    return this.miniService.SubscribeMessage.send(data);
+    return this.miniService.subscribeMessage.send(data);
   }
 
   @Get("getUnlimited")
   async getUnlimited(@Query() query: { scene: string }) {
-    return this.miniService.QRCode.getUnlimited(query);
+    return this.miniService.qrcode.getUnlimited(query);
   }
 
   @Post("jsapi")
   async jsapi(@Body() data: JSAPIOptions) {
-    return this.payService.Pay.jsapi(data);
+    return this.payService.pay.jsapi(data);
   }
 
   @Get("certificates")
   async certificates(@Body() data: JSAPIOptions) {
-    console.log(this.payService.Pay, 123123);
-    return this.payService.Pay.httpGet("/v3/certificates", {});
+    console.log(this.payService.pay, 123123);
+    return this.payService.pay.httpGet("/v3/certificates", {});
   }
 }

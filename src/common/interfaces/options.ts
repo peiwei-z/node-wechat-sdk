@@ -103,3 +103,35 @@ export interface JSAPIOptions {
   scene_info?: SceneInfo;
   settle_info?: SettleInfo;
 }
+
+export interface RefundAmountFromItem {
+  account: "AVAILABLE" | "UNAVAILABLE";
+  amount: number;
+}
+
+export interface RefundAmount {
+  refund: number;
+  from?: RefundAmountFromItem[];
+  total: number;
+  currency: string;
+}
+
+export interface RefundGoodsDetailItem {
+  merchant_goods_id: string;
+  wechatpay_goods_id?: string;
+  goods_name?: string;
+  unit_price: number;
+  refund_amount: number;
+  refund_quantity: number;
+}
+
+export interface RefundOptions {
+  transaction_id?: string;
+  out_trade_no?: string;
+  out_refund_no: string;
+  reason?: string;
+  notify_url?: string;
+  funds_account?: "AVAILABLE";
+  amount: RefundAmount;
+  goods_detail?: RefundGoodsDetailItem[];
+}

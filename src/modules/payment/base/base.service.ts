@@ -8,7 +8,7 @@ import { Injectable } from "@nestjs/common";
 import Crypto, { KeyObject } from "crypto";
 import queryString from "query-string";
 import { CipherGCMTypes } from "src/common/constants";
-import { CertificateInfo } from "src/common/interfaces";
+import { CertificateInfo, DecryptNotifyData } from "src/common/interfaces";
 import {
   createPublicKey,
   getTimestamp,
@@ -42,8 +42,8 @@ export class BaseService extends Base {
   /**
    * 生成微信支付 V3 Token
    */
-  public generateAuthorizationToken(
-    privateKey: Buffer,
+  private generateAuthorizationToken(
+    privateKey: Buffer | string,
     payload: GenerateAuthorizationTokenPayload
   ): string {
     const toBeSignedStr = `${payload.method}\n${payload.url}\n${payload.timestamp}\n${payload.nonce}\n${payload.body}\n`;
@@ -55,7 +55,7 @@ export class BaseService extends Base {
   /**
    * 获取微信支付 V3 Token
    */
-  public getAuthorizationToken(
+  private getAuthorizationToken(
     method: string,
     url: string,
     body?: string
@@ -81,8 +81,8 @@ export class BaseService extends Base {
   /**
    * 生成微信支付JSAPI签名
    */
-  public generatePaySign(
-    privateKey: Buffer,
+  private generatePaySign(
+    privateKey: Buffer | string,
     payload: GeneratePaymentPayload
   ): string {
     const toBeSignedStr = `${payload.appId}\n${payload.timestamp}\n${payload.nonce}\n${payload.body}\n`;
@@ -117,7 +117,7 @@ export class BaseService extends Base {
   /**
    * 验证微信支付返回签名
    */
-  public verifyResponseSignature(
+  private verifyResponseSignature(
     publicKey: KeyObject,
     payload: VerifyResponseSignaturePayload,
     signature: string
@@ -129,7 +129,7 @@ export class BaseService extends Base {
   /**
    *  解密方法
    */
-  public decrypt(apiV3Key: string, data: CipherData): string {
+  private decrypt(apiV3Key: string, data: CipherData): string {
     const algorithm = CipherGCMTypes[data.algorithm];
 
     if (!algorithm) {
@@ -161,18 +161,18 @@ export class BaseService extends Base {
   }
 
   /**
-   *  解密敏感数据
+   *  解密回调敏感数据
    */
-  public decryptData<T>(data: CipherData): T {
+  public decryptNotification(data: CipherData): DecryptNotifyData {
     const result = this.decrypt(this.credentials.apiV3Key, data);
 
-    return JSON.parse(result);
+    return result ? JSON.parse(result) : {};
   }
 
   /**
    *  获取平台证书详细信息
    */
-  public getCertificateInfo(): CertificateInfo | null {
+  protected getCertificateInfo(): CertificateInfo | null {
     const { certs, serialNo } = this.credentials;
     const certificate = certs.find(
       (item: CertificateInfo) => item.serial_no === serialNo
@@ -249,7 +249,7 @@ export class BaseService extends Base {
       );
       if (!verifyResult) {
         return {
-          code: "VERIFY_FAIL",
+          code: 500,
           message: "微信返回结果签名验证失败",
           data: null,
         };

@@ -19,7 +19,7 @@ export class AuthService extends BaseService {
    * @param code
    * @returns
    */
-  public async session(code: string): Promise<AuthSessionResponse> {
+  public async getSession(code: string): Promise<AuthSessionResponse> {
     const params = {
       appid: this.app.appId,
       secret: this.app.appSecret,
