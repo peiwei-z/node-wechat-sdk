@@ -61,6 +61,27 @@ content-type: {{contentType}}
   }
 }
 
+
+###
+POST http://{{host}}/h5 HTTP/1.1
+Authorization: {{authorization}}
+content-type: {{contentType}}
+
+{
+  "description": "string",
+  "out_trade_no": "string",
+  "amount": {
+    "total": 100
+  },
+  "scene_info": {
+    "payer_client_ip": "192.168.0.1",
+    "h5_info": {
+      "type": "Wap"
+    }
+  },
+  "notify_url": "https://hxorganization-dev.sumian.tech/"
+}
+
 ###
 GET http://{{host}}/certificates HTTP/1.1
 Authorization: {{authorization}}

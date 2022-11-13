@@ -84,3 +84,7 @@ export interface DecryptNotifyData {
     device_id: string;
   };
 }
+
+export interface H5PaymentResponse {
+  h5_url: string;
+}

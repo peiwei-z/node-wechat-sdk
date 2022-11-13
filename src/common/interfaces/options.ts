@@ -75,10 +75,18 @@ export interface StoreInfo {
   address?: string;
 }
 
+export interface H5Info {
+  type: string;
+  app_name: string;
+  app_url: string;
+  bundle_id: string;
+  package_name: string;
+}
 export interface SceneInfo {
   payer_client_ip: string;
   device_id?: string;
   store_info?: StoreInfo;
+  h5_info?: H5Info;
 }
 
 export interface SettleInfo {
@@ -102,6 +110,26 @@ export interface JSAPIOptions {
   detail?: PayDetail;
   scene_info?: SceneInfo;
   settle_info?: SettleInfo;
+  support_fapiao?: boolean;
+}
+
+export interface H5PayOptions {
+  appid: string;
+  mchid: string;
+  description: string;
+  out_trade_no: string;
+  amount: {
+    total: number;
+    currency?: string;
+  };
+  notify_url: string;
+  scene_info: SceneInfo;
+  time_expire?: string;
+  attach?: string;
+  goods_tag?: string;
+  detail?: PayDetail;
+  settle_info?: SettleInfo;
+  support_fapiao?: boolean;
 }
 
 export interface RefundAmountFromItem {

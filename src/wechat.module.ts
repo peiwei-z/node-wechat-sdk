@@ -5,7 +5,7 @@ import { WechatService } from "./wechat.service";
 
 @Module({
   imports: [],
-  controllers: [],
+  controllers: [WechatController],
   providers: [],
   exports: [],
 })

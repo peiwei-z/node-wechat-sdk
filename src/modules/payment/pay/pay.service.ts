@@ -5,7 +5,12 @@
  * @Last Modified time: 2022-07-09 23:11:50
  */
 import { Injectable } from "@nestjs/common";
-import { JSAPIOptions, JSAPIResponse } from "src/common/interfaces";
+import {
+  H5PaymentResponse,
+  H5PayOptions,
+  JSAPIOptions,
+  JSAPIResponse,
+} from "src/common/interfaces";
 import { BaseService } from "../base/base.service";
 
 @Injectable()
@@ -24,5 +29,17 @@ export class PayService extends BaseService {
       ret.data = this.getPaySign(ret.data.prepay_id);
     }
     return ret;
+  }
+
+  /**
+   *  H5下单
+   * @see https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_3_1.shtml
+   * @param data
+   * @returns
+   */
+  async h5(data: H5PayOptions): Promise<H5PaymentResponse> {
+    data.appid = this.app.appId;
+    data.mchid = this.app.mchId;
+    return this.httpPost("/v3/pay/transactions/h5", data);
   }
 }
