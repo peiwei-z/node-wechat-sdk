@@ -45,19 +45,18 @@ export abstract class BaseService extends HttpRequest {
       } else {
         this.count = 0;
       }
-
+      const { errcode, errmsg } = ret;
+      delete ret.errcode;
+      delete ret.errmsg;
+      let data = ret;
       if (returnRaw) {
-        return ret.arrayBuffer();
-      } else {
-        const { errcode, errmsg } = ret;
-        delete ret.errcode;
-        delete ret.errmsg;
-        return {
-          data: errcode ? null : ret,
-          code: errcode || 0,
-          message: errmsg || "",
-        };
+        data = await ret.buffer();
       }
+      return {
+        data: errcode ? null : data,
+        code: errcode || 0,
+        message: errmsg || "",
+      };
     } else {
       return new Error(response);
     }
