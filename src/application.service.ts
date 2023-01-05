@@ -33,7 +33,7 @@ export abstract class ApplicationService extends HttpRequest {
 
   constructor(options: WechatModuleOptions) {
     super();
-    if (options.cache && !this.cache) {
+    if (options.cache) {
       this.cache = options.cache;
     }
   }
