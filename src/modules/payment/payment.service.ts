@@ -9,10 +9,12 @@ import fs from "fs";
 import { ApplicationService } from "src/application.service";
 import { PaymentCredentials, WechatModuleOptions } from "../../common/types";
 import { PayService } from "./pay/pay.service";
+import { RefundService } from "./refund/refund.service";
 
 @Injectable()
 export class PaymentService extends ApplicationService {
   public pay: PayService;
+  public refund: RefundService;
 
   constructor(options: WechatModuleOptions) {
     super(options);
@@ -53,6 +55,11 @@ export class PaymentService extends ApplicationService {
     if (!this.pay) {
       this.offsetSet("pay", (app: ApplicationService) => {
         return new PayService(app);
+      });
+    }
+    if (!this.refund) {
+      this.offsetSet("refund", (app: ApplicationService) => {
+        return new RefundService(app);
       });
     }
   }
