@@ -20,7 +20,7 @@ export class PaymentService extends ApplicationService {
     super(options);
     this.appId = options.appId;
     this.mchId = options.mchId;
-    this.privateKeyPath = options.privateKeyPath;
+    this.privateKey = options.privateKey;
     this.serialNo = options.serialNo;
     this.apiV3Key = options.apiV3Key;
     this.certs = [];
@@ -41,9 +41,9 @@ export class PaymentService extends ApplicationService {
       serialNo: this.serialNo,
       apiV3Key: this.apiV3Key,
       certs: this.certs,
-      privateKey: this.privateKeyPath
-        ? fs.readFileSync(this.privateKeyPath)
-        : "",
+      privateKey: fs.existsSync(this.privateKey)
+        ? fs.readFileSync(this.privateKey)
+        : this.privateKey,
     };
   }
 

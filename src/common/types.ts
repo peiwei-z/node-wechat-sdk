@@ -20,7 +20,7 @@ export interface WechatModuleOptions {
   /**
    * 商户 API 私钥
    */
-  privateKeyPath?: string;
+  privateKey?: string;
   /**
    * 商户 API 证书 serial_no
    */

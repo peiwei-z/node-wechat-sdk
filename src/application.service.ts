@@ -23,7 +23,7 @@ export abstract class ApplicationService extends HttpRequest {
   public appSecret: string;
   public tokenPath: string;
   public cacheKeyPrefix: string;
-  public privateKeyPath: string;
+  public privateKey: string;
   public serialNo: string;
   public apiV3Key: string;
   public certs: CertificateInfo[];

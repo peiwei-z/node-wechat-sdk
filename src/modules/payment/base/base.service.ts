@@ -46,10 +46,14 @@ export class BaseService extends Base {
     privateKey: Buffer | string,
     payload: GenerateAuthorizationTokenPayload
   ): string {
-    const toBeSignedStr = `${payload.method}\n${payload.url}\n${payload.timestamp}\n${payload.nonce}\n${payload.body}\n`;
-    const signature = signWithRSASha256(privateKey, toBeSignedStr, "base64");
+    try {
+      const toBeSignedStr = `${payload.method}\n${payload.url}\n${payload.timestamp}\n${payload.nonce}\n${payload.body}\n`;
+      const signature = signWithRSASha256(privateKey, toBeSignedStr, "base64");
 
-    return signature;
+      return signature;
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   /**
@@ -60,22 +64,26 @@ export class BaseService extends Base {
     url: string,
     body?: string
   ): string {
-    const { mchId, serialNo } = this.credentials;
-    const schema = "WECHATPAY2-SHA256-RSA2048";
-    const timestamp = getTimestamp().toString();
-    const nonce = randomString(32);
+    try {
+      const { mchId, serialNo } = this.credentials;
+      const schema = "WECHATPAY2-SHA256-RSA2048";
+      const timestamp = getTimestamp().toString();
+      const nonce = randomString(32);
 
-    const signature = this.generateAuthorizationToken(
-      this.credentials.privateKey,
-      {
-        method,
-        url,
-        timestamp,
-        nonce,
-        body: body || "",
-      }
-    );
-    return `${schema} mchid="${mchId}",nonce_str="${nonce}",signature="${signature}",timestamp="${timestamp}",serial_no="${serialNo}"`;
+      const signature = this.generateAuthorizationToken(
+        this.credentials.privateKey,
+        {
+          method,
+          url,
+          timestamp,
+          nonce,
+          body: body || "",
+        }
+      );
+      return `${schema} mchid="${mchId}",nonce_str="${nonce}",signature="${signature}",timestamp="${timestamp}",serial_no="${serialNo}"`;
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   /**
@@ -85,33 +93,42 @@ export class BaseService extends Base {
     privateKey: Buffer | string,
     payload: GeneratePaymentPayload
   ): string {
-    const toBeSignedStr = `${payload.appId}\n${payload.timestamp}\n${payload.nonce}\n${payload.body}\n`;
-    const signature = signWithRSASha256(privateKey, toBeSignedStr, "base64");
-
-    return signature;
+    try {
+      const toBeSignedStr = `${payload.appId}\n${payload.timestamp}\n${payload.nonce}\n${payload.body}\n`;
+      const signature = signWithRSASha256(privateKey, toBeSignedStr, "base64");
+  
+      return signature;
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   /**
    * 获取微信支付JSAPI签名
    */
   public getPaySign(prepayId: string) {
-    const timestamp = getTimestamp().toString();
-    const nonce = randomString();
-    const pkg = `prepay_id=${prepayId}`;
-    const signType = "RSA";
-    const signature = this.generatePaySign(this.credentials.privateKey, {
-      appId: this.credentials.appId,
-      timestamp,
-      nonce,
-      body: pkg,
-    });
-    return {
-      timeStamp: timestamp,
-      nonceStr: nonce,
-      package: pkg,
-      signType,
-      paySign: signature,
-    };
+    try {
+      const timestamp = getTimestamp().toString();
+      const nonce = randomString();
+      const pkg = `prepay_id=${prepayId}`;
+      const signType = "RSA";
+      const signature = this.generatePaySign(this.credentials.privateKey, {
+        appId: this.credentials.appId,
+        timestamp,
+        nonce,
+        body: pkg,
+      });
+      return {
+        timeStamp: timestamp,
+        nonceStr: nonce,
+        package: pkg,
+        signType,
+        paySign: signature,
+      };
+    } catch (error) {
+      console.error(error);
+    }
+   
   }
 
   /**
@@ -122,51 +139,63 @@ export class BaseService extends Base {
     payload: VerifyResponseSignaturePayload,
     signature: string
   ): boolean {
-    const verifiedStr = `${payload.timestamp}\n${payload.nonce}\n${payload.body}\n`;
-    return verifyWithRSASha256(publicKey, verifiedStr, signature, "base64");
+    try {
+      const verifiedStr = `${payload.timestamp}\n${payload.nonce}\n${payload.body}\n`;
+      return verifyWithRSASha256(publicKey, verifiedStr, signature, "base64");
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   /**
    *  解密方法
    */
   private decrypt(apiV3Key: string, data: CipherData): string {
-    const algorithm = CipherGCMTypes[data.algorithm];
+    try {
+      const algorithm = CipherGCMTypes[data.algorithm];
 
-    if (!algorithm) {
-      throw new Error("Unsupported algorithm");
-    }
-
-    const buf = Buffer.from(data.ciphertext, "base64");
-    const text = buf.slice(0, buf.length - 16);
-    const authTag = buf.slice(buf.length - 16);
-
-    const decipher = Crypto.createDecipheriv(algorithm, apiV3Key, data.nonce, {
-      authTagLength: 16,
-    });
-
-    decipher.setAuthTag(authTag);
-
-    if (data.associated_data) {
-      decipher.setAAD(Buffer.from(data.associated_data, "utf8"), {
-        plaintextLength: text.length,
+      if (!algorithm) {
+        throw new Error("Unsupported algorithm");
+      }
+  
+      const buf = Buffer.from(data.ciphertext, "base64");
+      const text = buf.slice(0, buf.length - 16);
+      const authTag = buf.slice(buf.length - 16);
+  
+      const decipher = Crypto.createDecipheriv(algorithm, apiV3Key, data.nonce, {
+        authTagLength: 16,
       });
+  
+      decipher.setAuthTag(authTag);
+  
+      if (data.associated_data) {
+        decipher.setAAD(Buffer.from(data.associated_data, "utf8"), {
+          plaintextLength: text.length,
+        });
+      }
+  
+      const plaintext = Buffer.concat([
+        decipher.update(text),
+        decipher.final(),
+      ]).toString("utf8");
+  
+      return plaintext;
+    } catch (error) {
+      console.error(error);
     }
-
-    const plaintext = Buffer.concat([
-      decipher.update(text),
-      decipher.final(),
-    ]).toString("utf8");
-
-    return plaintext;
   }
 
   /**
    *  解密回调敏感数据
    */
   public decryptNotification(data: CipherData): DecryptNotifyData {
-    const result = this.decrypt(this.credentials.apiV3Key, data);
+    try {
+      const result = this.decrypt(this.credentials.apiV3Key, data);
 
-    return result ? JSON.parse(result) : {};
+      return result ? JSON.parse(result) : {};
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   /**
@@ -193,27 +222,31 @@ export class BaseService extends Base {
    * @returns
    */
   public async getCertificates(): Promise<CertificateInfo[]> {
-    const ret = await this.httpGet("/v3/certificates", {});
-    let certificates = [];
-    if (ret.code === 0) {
-      certificates = ret.data.data;
-      certificates.map((item) => {
-        const { algorithm, ciphertext, nonce, associated_data } =
-          item.encrypt_certificate;
-
-        const plaintext = this.decrypt(this.credentials.apiV3Key, {
-          algorithm,
-          ciphertext,
-          nonce,
-          associated_data,
+    try {
+      const ret = await this.httpGet("/v3/certificates", {});
+      let certificates = [];
+      if (ret.code === 0) {
+        certificates = ret.data.data;
+        certificates.map((item) => {
+          const { algorithm, ciphertext, nonce, associated_data } =
+            item.encrypt_certificate;
+  
+          const plaintext = this.decrypt(this.credentials.apiV3Key, {
+            algorithm,
+            ciphertext,
+            nonce,
+            associated_data,
+          });
+          const publicKey = createPublicKey(plaintext);
+  
+          item.encrypt_certificate.plaintext = plaintext;
+          item.encrypt_certificate.publicKey = publicKey;
         });
-        const publicKey = createPublicKey(plaintext);
-
-        item.encrypt_certificate.plaintext = plaintext;
-        item.encrypt_certificate.publicKey = publicKey;
-      });
+      }
+      return certificates;
+    } catch (error) {
+      console.error(error);
     }
-    return certificates;
   }
 
   async request(url: string, payload: RequestPayload): Promise<any> {

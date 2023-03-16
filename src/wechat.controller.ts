@@ -17,7 +17,7 @@ export class WechatController {
     appId: Config.MINI_PROGRAM_APP_ID,
     appSecret: Config.MINI_PROGRAM_APP_SECRET,
     mchId: Config.MCH_ID,
-    privateKeyPath: Config.PRIVATE_KEY_PATH,
+    privateKey: Config.PRIVATE_KEY,
     serialNo: Config.SERIAL_NO,
     apiV3Key: Config.API_V3_KEY,
     cache: redisCacheInstance,
