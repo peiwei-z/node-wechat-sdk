@@ -28,7 +28,7 @@ import {
 import { ApplicationService } from "src/application.service";
 import { BaseService as Base } from "../../../base.service";
 @Injectable()
-export class BaseService extends Base {
+export class PaymentBaseService extends Base {
   protected app: ApplicationService;
   protected count: number;
   protected credentials: PaymentCredentials;
@@ -94,7 +94,7 @@ export class BaseService extends Base {
     payload: GeneratePaymentPayload
   ): string {
     try {
-      const toBeSignedStr = `${payload.appId}\n${payload.timestamp}\n${payload.nonce}\n${payload.body}\n`;
+      const toBeSignedStr = `${payload.appid}\n${payload.timestamp}\n${payload.nonce}\n${payload.body}\n`;
       const signature = signWithRSASha256(privateKey, toBeSignedStr, "base64");
   
       return signature;
@@ -113,7 +113,7 @@ export class BaseService extends Base {
       const pkg = `prepay_id=${prepayId}`;
       const signType = "RSA";
       const signature = this.generatePaySign(this.credentials.privateKey, {
-        appId: this.credentials.appId,
+        appid: this.credentials.appId,
         timestamp,
         nonce,
         body: pkg,

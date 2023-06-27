@@ -86,3 +86,52 @@ content-type: {{contentType}}
 GET http://{{host}}/certificates HTTP/1.1
 Authorization: {{authorization}}
 content-type: {{contentType}}
+
+###
+GET http://{{host}}/getUserInfo?openid=123 HTTP/1.1
+Authorization: {{authorization}}
+content-type: {{contentType}}
+
+###
+GET http://{{host}}/getCurrentSelfMenuInfo HTTP/1.1
+Authorization: {{authorization}}
+content-type: {{contentType}}
+
+###
+POST http://{{host}}/createMenu HTTP/1.1
+Authorization: {{authorization}}
+content-type: {{contentType}}
+
+{
+  "button": [
+    {
+      "type": "miniprogram",
+      "name": "心理评估",
+      "url": "https://mp.weixin.qq.com/s/uXqqxHSAEbDInFi2xPD_hg",
+      "appid": "wx8d6360d5ea22b85f",
+      "pagepath": "pages/index/index"
+    },
+    {
+      "name": "专区服务",
+      "sub_button": [
+        {
+          "type": "view",
+          "name": "华西厦门",
+          "url": "http://hx-h5.hxxlpg.com/#/?id=4"
+        },
+        {
+          "type": "miniprogram",
+          "name": "科普宣教",
+          "url": "http://hx-h5.hxxlpg.com/#/?id=4",
+          "appid": "wx8d6360d5ea22b85f",
+          "pagepath": "pages/education/education"
+        }
+      ]
+    },
+    {
+      "type": "media_id",
+      "name": "关于我们",
+      "media_id": "5fMPqbLFFHB7tNNLZLjpFwGlqZKPj2O1I9oTmH9oaoDDmdrZUjQlG0T9RM2Ft0FD"
+    }
+  ]
+}

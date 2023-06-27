@@ -53,9 +53,6 @@ export interface ModuleForRootAsyncOptions
   useFactory?: (
     ...args: any[]
   ) => Promise<WechatModuleOptions> | WechatModuleOptions;
-  /**
-   * The providers which should get injected
-   */
   inject?: (string | symbol | Function | Type<any> | Abstract<any>)[];
 }
 
@@ -75,7 +72,7 @@ export interface GenerateAuthorizationTokenPayload {
 }
 
 export interface GeneratePaymentPayload {
-  appId: string;
+  appid: string;
   timestamp: string;
   nonce: string;
   body: string;
@@ -87,7 +84,7 @@ export interface VerifyResponseSignaturePayload {
   body: string;
 }
 
-export interface MiniProgramCredentials {
+export interface WeChatCredentials {
   appid: string;
   secret: string;
   grant_type: string;

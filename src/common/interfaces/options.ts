@@ -163,3 +163,7 @@ export interface RefundOptions {
   amount: RefundAmount;
   goods_detail?: RefundGoodsDetailItem[];
 }
+
+export interface UserInfoOptions {
+  openid: string;
+}

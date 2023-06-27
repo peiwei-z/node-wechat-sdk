@@ -6,10 +6,10 @@
  */
 import { Injectable } from "@nestjs/common";
 import { JSAPIResponse, RefundOptions } from "src/common/interfaces";
-import { BaseService } from "../base/base.service";
+import { PaymentBaseService } from "../base/payment-base.service";
 
 @Injectable()
-export class RefundService extends BaseService {
+export class RefundService extends PaymentBaseService {
   /**
    * 申请退款
    * @see https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_5_9.shtml

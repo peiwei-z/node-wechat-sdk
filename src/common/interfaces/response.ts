@@ -88,3 +88,16 @@ export interface DecryptNotifyData {
 export interface H5PaymentResponse {
   h5_url: string;
 }
+
+export interface CustomMenuOptions {
+  button: object[], 
+  sub_button: object[], 
+  type: string,
+  name: string,
+  key: string,
+  url: string,
+  media_id: string,
+  appid: string,
+  pagepath: string,
+  article_id: string,
+}

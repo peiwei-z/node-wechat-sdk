@@ -11,10 +11,10 @@ import {
   JSAPIOptions,
   JSAPIResponse,
 } from "src/common/interfaces";
-import { BaseService } from "../base/base.service";
+import { PaymentBaseService } from "../base/payment-base.service";
 
 @Injectable()
-export class PayService extends BaseService {
+export class PayService extends PaymentBaseService {
   /**
    *  JSAPI下单
    * @see https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_1_1.shtml

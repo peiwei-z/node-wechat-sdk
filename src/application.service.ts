@@ -62,7 +62,6 @@ export abstract class ApplicationService extends HttpRequest {
 
     const credentials = await this.getCredentials();
     const ret = await this.requestToken(credentials);
-
     await this.setToken(ret);
     return ret;
   }
@@ -93,11 +92,10 @@ export abstract class ApplicationService extends HttpRequest {
 
     try {
       const response = await this.httpRequest(url, { method: "POST" });
-      if (response.ok) {
-        return response.json();
-      } else {
-        return new Error(response);
-      }
+      const ret = await this.response(response);
+      const { code, message } = ret;
+      if (code) throw new Error(message);
+      return ret.data;
     } catch (err) {
       throw new Error(err);
     }

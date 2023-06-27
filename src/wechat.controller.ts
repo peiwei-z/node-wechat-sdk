@@ -1,17 +1,28 @@
+/*
+ * @Author: zpw 
+ * @Date: 2022-11-12 21:45:00
+ * @LastEditors: zpw 
+ * @LastEditTime: 2023-06-26 16:52:47
+ * @FilePath: /hx-common-service/Users/sumian/workspace/node-wechat-sdk/src/wechat.controller.ts
+ * @Description: 
+ */
 import { Body, Controller, Get, Post, Query } from "@nestjs/common";
 import { redisCacheInstance } from "./common";
 import {
+  CustomMenuOptions,
   H5PayOptions,
   JSAPIOptions,
   SubscribeMessageOptions,
+  UserInfoOptions,
 } from "./common/interfaces";
 import Config from "./config";
-import { MiniProgramService, PaymentService } from "./modules";
+import { MiniProgramService, OfficialAccountService, PaymentService } from "./modules";
 
 @Controller()
 export class WechatController {
   private readonly miniService: MiniProgramService;
   private readonly payService: PaymentService;
+  private readonly officialAccountService: OfficialAccountService;
 
   readonly options = {
     appId: Config.MINI_PROGRAM_APP_ID,
@@ -22,10 +33,22 @@ export class WechatController {
     apiV3Key: Config.API_V3_KEY,
     cache: redisCacheInstance,
   };
+
+  readonly officialAccountOption = {
+    appId: Config.OFFICIAL_ACCOUNT_APP_ID,
+    appSecret: Config.OFFICIAL_ACCOUNT_APP_SECRET,
+    mchId: Config.MCH_ID,
+    privateKey: Config.PRIVATE_KEY,
+    serialNo: Config.SERIAL_NO,
+    apiV3Key: Config.API_V3_KEY,
+    cache: redisCacheInstance,
+  };
   constructor() {
     this.miniService = new MiniProgramService(this.options);
     this.payService = new PaymentService(this.options);
+    this.officialAccountService = new OfficialAccountService(this.officialAccountOption);
   }
+
   @Get("auth")
   auth(@Query() query: { code: string }) {
     return this.miniService.auth.getSession(query.code);
@@ -33,7 +56,13 @@ export class WechatController {
 
   @Post("sendTemplateMessage")
   sendTemplateMessage(@Body() data: SubscribeMessageOptions) {
-    return this.miniService.subscribeMessage.send(data);
+    return this.officialAccountService.subscribeMessage.send(data);
+    // return this.miniService.subscribeMessage.send(data);
+  }
+
+  @Get("getUserInfo")
+  user(@Query() data: UserInfoOptions) {
+    return this.officialAccountService.user.info(data);
   }
 
   @Get("getUnlimited")
@@ -55,4 +84,15 @@ export class WechatController {
   async h5(@Body() data: H5PayOptions) {
     return this.payService.pay.h5(data);
   }
+
+  @Get("getCurrentSelfMenuInfo")
+  async getCurrentSelfMenuInfo() {
+    return this.officialAccountService.menu.getCurrentSelfMenuInfo();
+  }
+
+  @Post("createMenu")
+  async createMenu(@Body() data: CustomMenuOptions) {
+    return this.officialAccountService.menu.create(data);
+  }
+  
 }

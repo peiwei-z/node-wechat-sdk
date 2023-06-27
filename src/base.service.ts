@@ -27,48 +27,19 @@ export abstract class BaseService extends HttpRequest {
     returnRaw?: boolean,
     refresh?: boolean,
   ): Promise<any> {
-    const queryParams = {
-      ...payload.params,
-      access_token: (await this.app.getToken(refresh)).access_token,
-    };
-    const fetchUrl = `${this.app.domain}${url}?${queryString.stringify(
-      queryParams,
-    )}`;
-
-    const response = await this.httpRequest(fetchUrl, payload);
-    if (response.ok) {
-      const contentType = response.headers.get('content-type');
-      let ret = null;
-      if (contentType.includes('image')) {
-        ret = await response.buffer();
-      } else {
-        ret = await response.json();
-      }
-      console.log(ret, 'refresh_access_token_count:' + this.count);
-      if (ret?.errcode === 40001 && this.count < 5) {
-        this.count++;
-        this.request(url, payload, returnRaw, true);
-      } else {
-        this.count = 0;
-      }
-      const { errcode, errmsg } = ret;
-      delete ret.errcode;
-      delete ret.errmsg;
-
-      if (returnRaw) {
-        if (errcode) {
-          return { data: null, code: errcode, message: errmsg || '' };
-        }
-        return ret;
-      } else {
-        return {
-          data: errcode ? null : ret,
-          code: errcode || 0,
-          message: errmsg || '',
-        };
-      }
-    } else {
-      return new Error(response);
+    try {
+      const queryParams = {
+        ...payload.params,
+        access_token: (await this.app.getToken(true)).access_token,
+      };
+      const fetchUrl = `${this.app.domain}${url}?${queryString.stringify(
+        queryParams,
+      )}`;
+  
+      const response = await this.httpRequest(fetchUrl, payload);
+      return this.response(response, returnRaw);
+    } catch (error) {
+      return { code: -1, message: error.message, data: null };
     }
   }
 

@@ -7,7 +7,7 @@
 import { Injectable } from "@nestjs/common";
 import { ApplicationService } from "src/application.service";
 import {
-  MiniProgramCredentials,
+  WeChatCredentials,
   WechatModuleOptions,
 } from "../../common/types";
 import { AuthService } from "./auth/auth.service";
@@ -32,7 +32,7 @@ export class MiniProgramService extends ApplicationService {
     this.registerProviders();
   }
 
-  getCredentials(): MiniProgramCredentials {
+  getCredentials(): WeChatCredentials {
     return {
       appid: this.appId,
       secret: this.appSecret,
