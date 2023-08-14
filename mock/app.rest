@@ -88,7 +88,7 @@ Authorization: {{authorization}}
 content-type: {{contentType}}
 
 ###
-GET http://{{host}}/getUserInfo?openid=123 HTTP/1.1
+GET http://{{host}}/getUserInfo?openid=osLQC6WdykVi8IfKFaGttvP3q3bg HTTP/1.1
 Authorization: {{authorization}}
 content-type: {{contentType}}
 

@@ -22,6 +22,6 @@ export class UserService extends BaseService {
   public async info(
     data: UserInfoOptions
   ): Promise<DefaultResponse> {
-    return this.httpPost("/cgi-bin/user/info", data);
+    return this.httpGet("/cgi-bin/user/info", data);
   }
 }
