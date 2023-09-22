@@ -4,19 +4,21 @@
  * @Last Modified by: peiwei.zhu
  * @Last Modified time: 2022-07-09 22:00:54
  */
-import { Injectable } from "@nestjs/common";
-import queryString from "query-string";
-import { AccessTokenResponse, CertificateInfo } from "./common/interfaces";
+import { Injectable } from '@nestjs/common';
+import queryString from 'query-string';
+import { AccessTokenResponse, CertificateInfo } from './common/interfaces';
 import {
-  HttpRequest,
   redisCacheInstance,
   CacheBase,
   createHash,
-} from "./common";
-import { WechatModuleOptions } from "./common/types";
+  httpRequest,
+  responseHandler,
+} from './common';
+import { WechatModuleOptions } from './common/types';
+import { Exception } from './common/Exception';
 
 @Injectable()
-export abstract class ApplicationService extends HttpRequest {
+export abstract class ApplicationService {
   public domain: string;
   public appId: string;
   public mchId: string;
@@ -32,7 +34,6 @@ export abstract class ApplicationService extends HttpRequest {
   public cache: CacheBase = redisCacheInstance;
 
   constructor(options: WechatModuleOptions) {
-    super();
     if (options.cache) {
       this.cache = options.cache;
     }
@@ -66,19 +67,19 @@ export abstract class ApplicationService extends HttpRequest {
     return ret;
   }
 
-  protected async setToken(data: AccessTokenResponse): Promise<this> {
+  protected async setToken(data: AccessTokenResponse): Promise<boolean> {
     const cacheKey = await this.getCacheKey();
 
     if (this.cache) {
       await this.cache.set(cacheKey, data, data.expires_in - 100);
     }
 
-    return this;
+    return true;
   }
 
-  async refresh(): Promise<this> {
+  async refresh(): Promise<boolean> {
     this.getToken(true);
-    return this;
+    return true;
   }
 
   getRefreshedToken(): Promise<AccessTokenResponse> {
@@ -87,17 +88,13 @@ export abstract class ApplicationService extends HttpRequest {
 
   protected async requestToken(credentials: object): Promise<any> {
     const url = `${this.domain}${this.tokenPath}?${queryString.stringify(
-      credentials
+      credentials,
     )}`;
 
-    try {
-      const response = await this.httpRequest(url, { method: "POST" });
-      const ret = await this.response(response);
-      const { code, message } = ret;
-      if (code) throw new Error(message);
-      return ret.data;
-    } catch (err) {
-      throw new Error(err);
-    }
+    const response = await httpRequest(url, { method: 'POST' });
+    const ret = await responseHandler(response);
+    const { code, message } = ret;
+    if (code) throw new Exception(message, ret);
+    return ret.data;
   }
 }

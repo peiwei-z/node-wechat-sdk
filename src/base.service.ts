@@ -6,17 +6,16 @@
  */
 import { Injectable } from '@nestjs/common';
 import queryString from 'query-string';
-import { HttpRequest } from './common';
+import { httpRequest, responseHandler } from './common';
 import { RequestPayload } from './common/types';
 import { ApplicationService } from './application.service';
 
 @Injectable()
-export abstract class BaseService extends HttpRequest {
+export class BaseService {
   protected app: ApplicationService;
   protected count: number;
 
   constructor(app: ApplicationService) {
-    super();
     this.app = app;
     this.count = 0;
   }
@@ -30,16 +29,16 @@ export abstract class BaseService extends HttpRequest {
     try {
       const queryParams = {
         ...payload.params,
-        access_token: (await this.app.getToken(true)).access_token,
+        access_token: (await this.app.getToken()).access_token,
       };
       const fetchUrl = `${this.app.domain}${url}?${queryString.stringify(
         queryParams,
       )}`;
-  
-      const response = await this.httpRequest(fetchUrl, payload);
-      return this.response(response, returnRaw);
+      
+      const response = await httpRequest(fetchUrl, payload);
+      return responseHandler(response, returnRaw);
     } catch (error) {
-      return { code: -1, message: error.message, data: null };
+      return error.details;
     }
   }
 

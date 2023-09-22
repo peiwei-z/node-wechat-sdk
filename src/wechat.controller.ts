@@ -2,8 +2,8 @@
  * @Author: zpw 
  * @Date: 2022-11-12 21:45:00
  * @LastEditors: zpw 
- * @LastEditTime: 2023-06-26 16:52:47
- * @FilePath: /hx-common-service/Users/sumian/workspace/node-wechat-sdk/src/wechat.controller.ts
+ * @LastEditTime: 2023-09-22 11:46:35
+ * @FilePath: /node-wechat-sdk/src/wechat.controller.ts
  * @Description: 
  */
 import { Body, Controller, Get, Post, Query } from "@nestjs/common";
@@ -93,6 +93,11 @@ export class WechatController {
   @Post("createMenu")
   async createMenu(@Body() data: CustomMenuOptions) {
     return this.officialAccountService.menu.create(data);
+  }
+
+  @Post("oauth2")
+  async oauth2(@Body() code: string) {
+    return this.officialAccountService.oauth.oauth2(code);
   }
   
 }

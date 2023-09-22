@@ -5,7 +5,7 @@
  * @Last Modified time: 2022-07-09 14:21:58
  */
 export * from "./cache";
-export * from "./HttpRequest";
+export * from "./FetchBase";
 export * from "./util";
 import * as constants from "./constants";
 

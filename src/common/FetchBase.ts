@@ -7,8 +7,7 @@
 import fetch from "node-fetch";
 import { RequestPayload } from "./types";
 
-export class HttpRequest {
-  async httpRequest(url: string, payload: RequestPayload) {
+ export const httpRequest = async (url: string, payload: RequestPayload) => {
     const config = {
       method: payload.method,
       headers: {
@@ -24,7 +23,7 @@ export class HttpRequest {
       return new Error(error);
     }
   }
-  async response(response, returnRaw = false) {
+ export const responseHandler = async (response, returnRaw = false) => {
     if (response.ok) {
       const contentType = response.headers.get('content-type');
       let ret = null;
@@ -33,13 +32,6 @@ export class HttpRequest {
       } else {
         ret = await response.json();
       }
-      // console.log(ret, 'refresh_access_token_count:' + this.count);
-      // if (ret?.errcode === 40001 && this.count < 5) {
-      //   this.count++;
-      //   this.request(url, payload, returnRaw, true);
-      // } else {
-      //   this.count = 0;
-      // }
       const { errcode, errmsg } = ret;
       delete ret.errcode;
       delete ret.errmsg;
@@ -60,4 +52,3 @@ export class HttpRequest {
       return new Error(response);
     }
   }
-}

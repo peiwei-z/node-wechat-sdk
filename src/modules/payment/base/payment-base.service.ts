@@ -12,6 +12,7 @@ import { CertificateInfo, DecryptNotifyData } from "src/common/interfaces";
 import {
   createPublicKey,
   getTimestamp,
+  httpRequest,
   isOutdated,
   randomString,
   signWithRSASha256,
@@ -26,9 +27,9 @@ import {
   CipherData,
 } from "../../../common/types";
 import { ApplicationService } from "src/application.service";
-import { BaseService as Base } from "../../../base.service";
+import { BaseService } from "../../../base.service";
 @Injectable()
-export class PaymentBaseService extends Base {
+export class PaymentBaseService extends BaseService {
   protected app: ApplicationService;
   protected count: number;
   protected credentials: PaymentCredentials;
@@ -261,7 +262,7 @@ export class PaymentBaseService extends Base {
       JSON.stringify(payload.body)
     );
     payload.headers = { Authorization: token };
-    const response = await this.httpRequest(fetchUrl, payload);
+    const response = await httpRequest(fetchUrl, payload);
     const ret = await response.json();
     const headers = response.headers;
 

@@ -14,6 +14,8 @@ export interface AccessTokenResponse extends DefaultResponse {
   refresh_token?: string; // 刷新token
   openid?: string;
   scope?: string;
+  is_snapshotuser?: number;
+  unionid?: string;
 }
 
 export interface AuthSessionResponse extends DefaultResponse {

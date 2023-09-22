@@ -4,17 +4,17 @@
  * @Last Modified by: peiwei.zhu
  * @Last Modified time: 2022-07-09 23:11:48
  */
-import { Injectable } from "@nestjs/common";
-import fs from "fs";
-import { ApplicationService } from "src/application.service";
-import { PaymentCredentials, WechatModuleOptions } from "../../common/types";
-import { PayService } from "./pay/pay.service";
-import { RefundService } from "./refund/refund.service";
+import { Injectable } from '@nestjs/common';
+import fs from 'fs';
+import { ApplicationService } from 'src/application.service';
+import { PaymentCredentials, WechatModuleOptions } from '../../common/types';
+import { PayService } from './pay/pay.service';
+import { RefundService } from './refund/refund.service';
 
 @Injectable()
 export class PaymentService extends ApplicationService {
-  public pay: PayService;
-  public refund: RefundService;
+  readonly pay: PayService;
+  readonly refund: RefundService;
 
   constructor(options: WechatModuleOptions) {
     super(options);
@@ -26,9 +26,9 @@ export class PaymentService extends ApplicationService {
     this.certs = [];
     this.needVerify = options.needVerify || true;
 
-    this.domain = "https://api.mch.weixin.qq.com";
-    this.cacheKeyPrefix = "wechat:mini_program:access_token";
-    this.tokenPath = "/cgi-bin/token";
+    this.domain = 'https://api.mch.weixin.qq.com';
+    this.cacheKeyPrefix = 'wechat:mini_program:access_token';
+    this.tokenPath = '/cgi-bin/token';
 
     this.registerProviders();
     this.updateCerts();
@@ -53,12 +53,12 @@ export class PaymentService extends ApplicationService {
 
   registerProviders(): void {
     if (!this.pay) {
-      this.offsetSet("pay", (app: ApplicationService) => {
+      this.offsetSet('pay', (app: ApplicationService) => {
         return new PayService(app);
       });
     }
     if (!this.refund) {
-      this.offsetSet("refund", (app: ApplicationService) => {
+      this.offsetSet('refund', (app: ApplicationService) => {
         return new RefundService(app);
       });
     }

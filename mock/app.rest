@@ -135,3 +135,12 @@ content-type: {{contentType}}
     }
   ]
 }
+
+###
+POST http://{{host}}/oauth2 HTTP/1.1
+Authorization: {{authorization}}
+content-type: {{contentType}}
+
+{
+  "code": "osLQC6WdykVi8IfKFaGttvP3q3bg"
+}
