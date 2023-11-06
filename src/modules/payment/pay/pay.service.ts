@@ -4,14 +4,14 @@
  * @Last Modified by: peiwei.zhu
  * @Last Modified time: 2022-07-09 23:11:50
  */
-import { Injectable } from "@nestjs/common";
+import { Injectable } from '@nestjs/common';
 import {
-  H5PaymentResponse,
+  H5PaymentDto,
   H5PayOptions,
   JSAPIOptions,
-  JSAPIResponse,
-} from "src/common/interfaces";
-import { PaymentBaseService } from "../base/payment-base.service";
+  JSAPIDto,
+} from 'src/common/interfaces';
+import { PaymentBaseService } from '../base/payment-base.service';
 
 @Injectable()
 export class PayService extends PaymentBaseService {
@@ -21,10 +21,12 @@ export class PayService extends PaymentBaseService {
    * @param data
    * @returns
    */
-  async jsapi(data: JSAPIOptions): Promise<JSAPIResponse> {
-    data.appid = this.app.appId;
-    data.mchid = this.app.mchId;
-    const ret = await this.httpPost("/v3/pay/transactions/jsapi", data);
+  async jsapi(data: JSAPIOptions): Promise<JSAPIDto> {
+    const ret = await this.httpPost('/v3/pay/transactions/jsapi', {
+      ...data,
+      appid: this.app.appId,
+      mchid: this.app.mchId,
+    });
     if (ret.code === 0) {
       ret.data = this.getPaySign(ret.data.prepay_id);
     }
@@ -37,9 +39,11 @@ export class PayService extends PaymentBaseService {
    * @param data
    * @returns
    */
-  async h5(data: H5PayOptions): Promise<H5PaymentResponse> {
-    data.appid = this.app.appId;
-    data.mchid = this.app.mchId;
-    return this.httpPost("/v3/pay/transactions/h5", data);
+  async h5(data: H5PayOptions): Promise<H5PaymentDto> {
+    return this.httpPost('/v3/pay/transactions/h5', {
+      ...data,
+      appid: this.app.appId,
+      mchid: this.app.mchId,
+    });
   }
 }

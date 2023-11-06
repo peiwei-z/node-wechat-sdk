@@ -6,8 +6,8 @@
  */
 import { Injectable } from "@nestjs/common";
 import {
-  AuthSessionResponse,
-  PhoneNumberResponse,
+  AuthSessionDto,
+  PhoneNumberDto,
 } from "src/common/interfaces";
 import { BaseService } from "src/base.service";
 
@@ -19,7 +19,7 @@ export class AuthService extends BaseService {
    * @param code
    * @returns
    */
-  public async getSession(code: string): Promise<AuthSessionResponse> {
+  public async getSession(code: string): Promise<AuthSessionDto> {
     const params = {
       appid: this.app.appId,
       secret: this.app.appSecret,
@@ -35,7 +35,7 @@ export class AuthService extends BaseService {
    * @param code
    * @returns
    */
-  public async getPhoneNumber(code: string): Promise<PhoneNumberResponse> {
+  public async getPhoneNumber(code: string): Promise<PhoneNumberDto> {
     return this.httpPost("/wxa/business/getuserphonenumber", { code });
   }
 }

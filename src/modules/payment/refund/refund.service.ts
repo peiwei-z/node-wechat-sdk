@@ -4,9 +4,9 @@
  * @Last Modified by: peiwei.zhu
  * @Last Modified time: 2022-07-09 23:11:50
  */
-import { Injectable } from "@nestjs/common";
-import { JSAPIResponse, RefundOptions } from "src/common/interfaces";
-import { PaymentBaseService } from "../base/payment-base.service";
+import { Injectable } from '@nestjs/common';
+import { RefundDto, RefundOptions } from 'src/common/interfaces';
+import { PaymentBaseService } from '../base/payment-base.service';
 
 @Injectable()
 export class RefundService extends PaymentBaseService {
@@ -16,7 +16,11 @@ export class RefundService extends PaymentBaseService {
    * @param data
    * @returns
    */
-  async refund(data: RefundOptions): Promise<JSAPIResponse> {
-    return this.httpPost("/v3/refund/domestic/refunds", data);
+  async refund(data: RefundOptions): Promise<RefundDto> {
+    return this.httpPost('/v3/refund/domestic/refunds', {
+      ...data,
+      appid: this.app.appId,
+      mchid: this.app.mchId,
+    });
   }
 }

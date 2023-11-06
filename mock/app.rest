@@ -112,21 +112,11 @@ content-type: {{contentType}}
       "pagepath": "pages/index/index"
     },
     {
-      "name": "专区服务",
-      "sub_button": [
-        {
-          "type": "view",
-          "name": "华西厦门",
-          "url": "http://hx-h5.hxxlpg.com/#/?id=4"
-        },
-        {
-          "type": "miniprogram",
-          "name": "科普宣教",
-          "url": "http://hx-h5.hxxlpg.com/#/?id=4",
-          "appid": "wx8d6360d5ea22b85f",
-          "pagepath": "pages/education/education"
-        }
-      ]
+      "type": "miniprogram",
+      "name": "科普宣教",
+      "url": "https://mp.weixin.qq.com/s/uXqqxHSAEbDInFi2xPD_hg",
+      "appid": "wx8d6360d5ea22b85f",
+      "pagepath": "pages/education/education"
     },
     {
       "type": "media_id",
@@ -135,6 +125,24 @@ content-type: {{contentType}}
     }
   ]
 }
+
+# {
+#   "name": "专区服务",
+#   "sub_button": [
+#     {
+#       "type": "view",
+#       "name": "华西厦门",
+#       "url": "http://hx-h5.hxxlpg.com/#/?id=4"
+#     },
+#     {
+#       "type": "miniprogram",
+#       "name": "科普宣教",
+#       "url": "http://hx-h5.hxxlpg.com/#/?id=4",
+#       "appid": "wx8d6360d5ea22b85f",
+#       "pagepath": "pages/education/education"
+#     }
+#   ]
+# },
 
 ###
 POST http://{{host}}/oauth2 HTTP/1.1

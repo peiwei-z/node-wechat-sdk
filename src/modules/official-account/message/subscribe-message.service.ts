@@ -8,7 +8,7 @@ import { Injectable } from "@nestjs/common";
 import { BaseService } from "src/base.service";
 import {
   SubscribeMessageOptions,
-  DefaultResponse,
+  DefaultDto,
 } from "src/common/interfaces";
 
 @Injectable()
@@ -21,7 +21,7 @@ export class SubscribeMessageService extends BaseService {
    */
     public async send(
       templateData: SubscribeMessageOptions
-    ): Promise<DefaultResponse> {
+    ): Promise<DefaultDto> {
       return this.httpPost("/cgi-bin/message/subscribe/bizsend", templateData);
     }
 }

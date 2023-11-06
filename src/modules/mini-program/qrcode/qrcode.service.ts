@@ -7,7 +7,7 @@
 import { Injectable } from '@nestjs/common';
 import {
   CreateQRCodeOptions,
-  DefaultResponse,
+  DefaultDto,
   GetQRCodeOptions,
   GetUnlimitedQRCodeOptions,
 } from 'src/common/interfaces';
@@ -23,7 +23,7 @@ export class QRCodeService extends BaseService {
    */
   public async createQRCode(
     data: CreateQRCodeOptions,
-  ): Promise<Buffer | DefaultResponse> {
+  ): Promise<Buffer | DefaultDto> {
     return this.httpPost('/cgi-bin/wxaapp/createwxaqrcode', data);
   }
 
@@ -33,7 +33,7 @@ export class QRCodeService extends BaseService {
    * @param data
    * @returns
    */
-  public async get(data: GetQRCodeOptions): Promise<Buffer | DefaultResponse> {
+  public async get(data: GetQRCodeOptions): Promise<Buffer | DefaultDto> {
     return this.httpPost('/wxa/getwxacode', data);
   }
 
@@ -45,7 +45,7 @@ export class QRCodeService extends BaseService {
    */
   public async getUnlimited(
     data: GetUnlimitedQRCodeOptions,
-  ): Promise<Buffer | DefaultResponse> {
+  ): Promise<Buffer | DefaultDto> {
     return this.httpPost('/wxa/getwxacodeunlimit', data);
   }
 }

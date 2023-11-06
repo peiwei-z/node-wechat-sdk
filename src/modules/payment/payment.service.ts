@@ -27,7 +27,7 @@ export class PaymentService extends ApplicationService {
     this.needVerify = options.needVerify || true;
 
     this.domain = 'https://api.mch.weixin.qq.com';
-    this.cacheKeyPrefix = 'wechat:mini_program:access_token';
+    this.cacheKeyPrefix = 'wechat:payment:access_token';
     this.tokenPath = '/cgi-bin/token';
 
     this.registerProviders();

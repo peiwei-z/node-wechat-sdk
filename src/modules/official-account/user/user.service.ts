@@ -7,7 +7,7 @@
 import { Injectable } from "@nestjs/common";
 import { BaseService } from "src/base.service";
 import {
-  DefaultResponse,
+  DefaultDto,
   UserInfoOptions
 } from "src/common/interfaces";
 
@@ -21,7 +21,7 @@ export class UserService extends BaseService {
    */
   public async info(
     data: UserInfoOptions
-  ): Promise<DefaultResponse> {
+  ): Promise<DefaultDto> {
     return this.httpGet("/cgi-bin/user/info", data);
   }
 }

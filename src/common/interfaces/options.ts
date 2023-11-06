@@ -159,11 +159,24 @@ export interface RefundOptions {
   out_refund_no: string;
   reason?: string;
   notify_url?: string;
-  funds_account?: "AVAILABLE";
+  funds_account?: string;
   amount: RefundAmount;
   goods_detail?: RefundGoodsDetailItem[];
 }
 
 export interface UserInfoOptions {
   openid: string;
+}
+
+export interface CustomMenuOptions {
+  button: object[], 
+  sub_button: object[], 
+  type: string,
+  name: string,
+  key: string,
+  url: string,
+  media_id: string,
+  appid: string,
+  pagepath: string,
+  article_id: string,
 }

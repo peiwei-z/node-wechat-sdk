@@ -8,7 +8,7 @@ import { Body, Injectable } from "@nestjs/common";
 import { BaseService } from "src/base.service";
 import {
   CustomMenuOptions,
-  DefaultResponse,
+  DefaultDto,
 } from "src/common/interfaces";
 
 @Injectable()
@@ -19,7 +19,7 @@ export class MenuService extends BaseService {
    * @param data
    * @returns
    */
-  public async getCurrentSelfMenuInfo(): Promise<DefaultResponse> {
+  public async getCurrentSelfMenuInfo(): Promise<DefaultDto> {
     return this.httpPost("/cgi-bin/get_current_selfmenu_info", {});
   }
 
@@ -29,7 +29,7 @@ export class MenuService extends BaseService {
    * @param data
    * @returns
    */
-   public async create(@Body() data: CustomMenuOptions): Promise<DefaultResponse> {
+   public async create(@Body() data: CustomMenuOptions): Promise<DefaultDto> {
     return this.httpPost("/cgi-bin/menu/create", data);
   }
 }

@@ -5,7 +5,7 @@
  * @Last Modified time: 2022-07-09 15:19:45
  */
 import { Injectable } from '@nestjs/common';
-import { AccessTokenResponse } from 'src/common/interfaces';
+import { AccessTokenDto, UserInfoDto } from 'src/common/interfaces';
 import { BaseService } from 'src/base.service';
 import { ApplicationService } from 'src/application.service';
 import { CacheBase, redisCacheInstance } from 'src/common';
@@ -29,7 +29,7 @@ export class OAuthService extends BaseService {
    * @param code
    * @returns
    */
-  public async oauth2(code: string): Promise<AccessTokenResponse> {
+  public async oauth2(code: string): Promise<AccessTokenDto> {
     const params = {
       appid: this.app.appId,
       secret: this.app.appSecret,
@@ -51,7 +51,7 @@ export class OAuthService extends BaseService {
    */
   public async refreshToken(
     refreshToken: string,
-  ): Promise<AccessTokenResponse> {
+  ): Promise<AccessTokenDto> {
     return this.httpGet('/sns/oauth2/refresh_token', {
       appid: this.app.appId,
       refresh_token: refreshToken,
@@ -65,7 +65,7 @@ export class OAuthService extends BaseService {
    * @param refreshToken
    * @returns
    */
-  public async getUserInfo(openid: string): Promise<AccessTokenResponse> {
+  public async getUserInfo(openid: string): Promise<UserInfoDto> {
     const token = await this.getToken(openid);
     return this.httpGet('/sns/userinfo', {
       appid: this.app.appId,
@@ -93,7 +93,7 @@ export class OAuthService extends BaseService {
     return token;
   }
 
-  protected async setToken(data: AccessTokenResponse): Promise<this> {
+  protected async setToken(data: AccessTokenDto): Promise<this> {
     if (this.cache) {
       this.cache.set(
         `${this.accessTokenPrefixKey}:${data.openid}`,

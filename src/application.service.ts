@@ -6,7 +6,7 @@
  */
 import { Injectable } from '@nestjs/common';
 import queryString from 'query-string';
-import { AccessTokenResponse, CertificateInfo } from './common/interfaces';
+import { AccessTokenDto, CertificateInfo } from './common/interfaces';
 import {
   redisCacheInstance,
   CacheBase,
@@ -54,7 +54,7 @@ export abstract class ApplicationService {
   }
 
   // 获取Token
-  async getToken(refresh?: boolean): Promise<AccessTokenResponse> {
+  async getToken(refresh?: boolean): Promise<AccessTokenDto> {
     if (!refresh && this.cache) {
       const cacheKey = await this.getCacheKey();
       const token = await this.cache.get(cacheKey);
@@ -67,7 +67,7 @@ export abstract class ApplicationService {
     return ret;
   }
 
-  protected async setToken(data: AccessTokenResponse): Promise<boolean> {
+  protected async setToken(data: AccessTokenDto): Promise<boolean> {
     const cacheKey = await this.getCacheKey();
 
     if (this.cache) {
@@ -82,7 +82,7 @@ export abstract class ApplicationService {
     return true;
   }
 
-  getRefreshedToken(): Promise<AccessTokenResponse> {
+  getRefreshedToken(): Promise<AccessTokenDto> {
     return this.getToken(true);
   }
 
