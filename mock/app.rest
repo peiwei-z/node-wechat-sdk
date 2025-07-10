@@ -68,8 +68,8 @@ Authorization: {{authorization}}
 content-type: {{contentType}}
 
 {
-  "description": "string",
-  "out_trade_no": "string",
+  "description": "测试商品",
+  "out_trade_no": "oOwmw5VrWRQsY9GV",
   "amount": {
     "total": 100
   },
@@ -88,7 +88,7 @@ Authorization: {{authorization}}
 content-type: {{contentType}}
 
 ###
-GET http://{{host}}/getUserInfo?openid=osLQC6WdykVi8IfKFaGttvP3q3bg HTTP/1.1
+GET http://{{host}}/getUserInfo?openid=o6KLg7Sb3YNeQnS2N1_AeLWLuP8U HTTP/1.1
 Authorization: {{authorization}}
 content-type: {{contentType}}
 
@@ -150,5 +150,38 @@ Authorization: {{authorization}}
 content-type: {{contentType}}
 
 {
-  "code": "osLQC6WdykVi8IfKFaGttvP3q3bg"
+  "code": "011A7TFa1LqXTJ0Fa1Ha1INyw81A7TFE"
+}
+
+
+###
+GET http://{{host}}/getOAuth2UserInfo?openid=o6KLg7Sb3YNeQnS2N1_AeLWLuP8U HTTP/1.1
+Authorization: {{authorization}}
+content-type: {{contentType}}
+
+
+
+###
+POST http://{{host}}/getQRCode HTTP/1.1
+Authorization: {{authorization}}
+content-type: {{contentType}}
+
+{
+  "action_name": "QR_LIMIT_SCENE",
+  "action_info": 1
+
+}
+
+
+###
+POST http://{{host}}/sendCustomMessage HTTP/1.1
+Authorization: {{authorization}}
+content-type: {{contentType}}
+
+{
+  "touser":"o6KLg7Sb3YNeQnS2N1_AeLWLuP8U",
+  "msgtype":"text",
+  "text": {
+    "content": "test"
+  }
 }

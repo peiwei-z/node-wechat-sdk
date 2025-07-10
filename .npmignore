@@ -3,6 +3,7 @@ test/
 .DS_Store
 .gitignore
 .npmignore
+.env
 
 .idea
 .vscode

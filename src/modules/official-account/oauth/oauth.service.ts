@@ -13,8 +13,8 @@ import { CacheBase, redisCacheInstance } from 'src/common';
 @Injectable()
 export class OAuthService extends BaseService {
   protected openid: string;
-  protected accessTokenPrefixKey: 'official:account:oauth:access_token';
-  protected refreshTokenPrefixKey: 'official:account:oauth:refresh_token';
+  protected accessTokenPrefixKey: string;
+  protected refreshTokenPrefixKey: string;
   protected cache: CacheBase = redisCacheInstance;
 
   constructor(app: ApplicationService) {
@@ -22,6 +22,9 @@ export class OAuthService extends BaseService {
     if (app.cache) {
       this.cache = app.cache;
     }
+
+    this.accessTokenPrefixKey = 'official:account:oauth:access_token';
+    this.refreshTokenPrefixKey = 'official:account:oauth:refresh_token';
   }
   /**
    * 公众号通过 code 获取access_token
@@ -49,9 +52,7 @@ export class OAuthService extends BaseService {
    * @param refreshToken
    * @returns
    */
-  public async refreshToken(
-    refreshToken: string,
-  ): Promise<AccessTokenDto> {
+  public async refreshToken(refreshToken: string): Promise<AccessTokenDto> {
     return this.httpGet('/sns/oauth2/refresh_token', {
       appid: this.app.appId,
       refresh_token: refreshToken,
@@ -68,7 +69,7 @@ export class OAuthService extends BaseService {
   public async getUserInfo(openid: string): Promise<UserInfoDto> {
     const token = await this.getToken(openid);
     return this.httpGet('/sns/userinfo', {
-      appid: this.app.appId,
+      openid,
       access_token: token,
       lang: 'zh_CN',
     });
@@ -77,12 +78,12 @@ export class OAuthService extends BaseService {
   // 获取Token
   protected async getToken(openid: string, refresh?: boolean): Promise<string> {
     const token = await this.cache.get(
-      `${this.accessTokenPrefixKey}:${openid}`,
+      `${this.accessTokenPrefixKey}:${this.app.appId}:${openid}`,
     );
 
     if (refresh || !token) {
       const refreshed = await this.cache.get(
-        `${this.refreshTokenPrefixKey}:${openid}`,
+        `${this.refreshTokenPrefixKey}:${this.app.appId}:${openid}`,
       );
       if (refreshed) {
         const refreshRet = await this.refreshToken(refreshed);
@@ -96,12 +97,12 @@ export class OAuthService extends BaseService {
   protected async setToken(data: AccessTokenDto): Promise<this> {
     if (this.cache) {
       this.cache.set(
-        `${this.accessTokenPrefixKey}:${data.openid}`,
+        `${this.accessTokenPrefixKey}:${this.app.appId}:${data.openid}`,
         data.access_token,
         data.expires_in - 1000,
       );
       this.cache.set(
-        `${this.refreshTokenPrefixKey}:${data.openid}`,
+        `${this.refreshTokenPrefixKey}:${this.app.appId}:${data.openid}`,
         data.refresh_token,
         30 * 24 * 3600,
       );

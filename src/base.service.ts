@@ -28,14 +28,15 @@ export class BaseService {
   ): Promise<any> {
     try {
       const queryParams = {
+        access_token: (await this.app.getToken(refresh)).access_token,
         ...payload.params,
-        access_token: (await this.app.getToken()).access_token,
       };
-      const fetchUrl = `${this.app.domain}${url}?${queryString.stringify(
-        queryParams,
-      )}`;
-      
+
+      const domain = url.indexOf('http') !== -1 ? url : this.app.domain;
+      const fetchUrl = `${domain}${url}?${queryString.stringify(queryParams)}`;
+
       const response = await httpRequest(fetchUrl, payload);
+      console.log('response', response);
       return responseHandler(response, returnRaw);
     } catch (error) {
       return error.details;

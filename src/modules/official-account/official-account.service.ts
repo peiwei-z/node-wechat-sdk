@@ -12,6 +12,8 @@ import { UserService } from './user/user.service';
 import { MenuService } from './menu/menu.service';
 import { TemplateMessageService } from './message/template-message.service';
 import { OAuthService } from './oauth/oauth.service';
+import { QRCodeService } from './qrcode/qrcode.service';
+import { CustomMessageService } from './message/custom-message.service';
 
 @Injectable()
 export class OfficialAccountService extends ApplicationService {
@@ -20,6 +22,8 @@ export class OfficialAccountService extends ApplicationService {
   readonly user: UserService;
   readonly menu: MenuService;
   readonly oauth: OAuthService;
+  readonly qrCode: QRCodeService;
+  readonly customMessage: CustomMessageService;
 
   constructor(options: WechatModuleOptions) {
     super(options);
@@ -69,6 +73,18 @@ export class OfficialAccountService extends ApplicationService {
     if (!this.menu) {
       this.offsetSet('menu', (app: ApplicationService) => {
         return new MenuService(app);
+      });
+    }
+
+    if (!this.qrCode) {
+      this.offsetSet('qrCode', (app: ApplicationService) => {
+        return new QRCodeService(app);
+      });
+    }
+
+    if (!this.customMessage) {
+      this.offsetSet('customMessage', (app: ApplicationService) => {
+        return new CustomMessageService(app);
       });
     }
   }

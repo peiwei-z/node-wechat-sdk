@@ -14,6 +14,11 @@ export interface QRCodeOptions {
   line_color?: Object; //	{"r":0,"g":0,"b":0}	否	auto_color 为 false 时生效，使用 rgb 设置颜色 例如 {"r":"xxx","g":"xxx","b":"xxx"} 十进制表示
   is_hyaline?: boolean; //	false	否	是否需要透明底色，为 true 时，生成透明底色的小程序
   width?: number; //	430	否	二维码的宽度，单位 px，最小 280px，最大 1280px
+
+  expire_seconds?: number;
+  action_name?: string;
+  action_info?: ActionInfo;
+  ticket?: string;
 }
 
 export interface CreateQRCodeOptions extends QRCodeOptions {
@@ -26,6 +31,13 @@ export interface GetUnlimitedQRCodeOptions extends QRCodeOptions {
 
 export interface GetQRCodeOptions extends QRCodeOptions {
   path: string; // 是	扫码进入的小程序页面路径，最大长度 128 字节，不能为空；对于小游戏，可以只传入 query 部分，来实现传参效果，如：传入 "?foo=bar"，即可在 wx.getLaunchOptionsSync 接口中的 query 参数获取到 {foo:"bar"}。
+}
+
+export interface ActionInfo {
+  scene?: {
+    scene_id?: number;
+    scene_str?: string;
+  };
 }
 
 export interface TemplateData {
@@ -48,6 +60,23 @@ export interface SubscribeMessageOptions {
   color?: string;
 
   lang?: string;
+}
+
+export interface CustomMessageOptions {
+  touser: string; //	是	用户的 OpenID
+  msgtype: string; //	是	消息类型。text表示文本消息；image表示图片消息；link表示图文链接；miniprogrampage表示小程序卡片。
+  text?: object; //	否	文本消息，msgtype="text" 时必填
+  image?: object; //	否	图片消息，msgtype="image" 时必填
+  voice?: object; //	否	语音消息，msgtype="voice" 时必填
+  video?: object; //	否	视频消息，msgtype="video" 时必填
+  music?: object; //	否	音乐消息，msgtype="music" 时必填
+  news?: object; //	否	图文消息（点击跳转到外链），msgtype="news" 时必填
+  mpnews?: object; //	否	图文消息（点击跳转到图文消息页面），msgtype="mpnews" 时必填，图文消息条数限制在1条以内，注意，如果图文数超过1，则将会返回错误码45008。（草稿灰度完成后，此类型不再支持）
+  mpnewsarticle?: object; //	否	图文消息（点击跳转到图文消息页面），msgtype="mpnewsarticle" 时必填，使用通过 “发布” 系列接口得到的 article_id
+  msgmenu?: object; //	否	菜单消息，msgtype="msgmenu" 时必填
+  wxcard?: object; //	否	卡券信息，msgtype="wxcard"时必填
+  miniprogrampage?: object; //	否	小程序消息，msgtype="miniprogrampage"时必填
+  customservice?: object; //	否	以某个客服账号来发消息
 }
 
 export interface Payer {
@@ -133,7 +162,7 @@ export interface H5PayOptions {
 }
 
 export interface RefundAmountFromItem {
-  account: "AVAILABLE" | "UNAVAILABLE";
+  account: 'AVAILABLE' | 'UNAVAILABLE';
   amount: number;
 }
 
@@ -169,14 +198,14 @@ export interface UserInfoOptions {
 }
 
 export interface CustomMenuOptions {
-  button: object[], 
-  sub_button: object[], 
-  type: string,
-  name: string,
-  key: string,
-  url: string,
-  media_id: string,
-  appid: string,
-  pagepath: string,
-  article_id: string,
+  button: object[];
+  sub_button: object[];
+  type: string;
+  name: string;
+  key: string;
+  url: string;
+  media_id: string;
+  appid: string;
+  pagepath: string;
+  article_id: string;
 }
