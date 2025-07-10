@@ -1,6 +1,6 @@
 {
   "name": "node-wechat-sdk",
-  "version": "1.2.5",
+  "version": "1.2.6",
   "description": "node wechat-server api.",
   "license": "MIT",
   "author": "peiwei.z",
