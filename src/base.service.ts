@@ -35,9 +35,13 @@ export class BaseService {
       const domain = url.indexOf('http') !== -1 ? url : this.app.domain;
       const fetchUrl = `${domain}${url}?${queryString.stringify(queryParams)}`;
 
-      const response = await httpRequest(fetchUrl, payload);
+      const rst = await httpRequest(fetchUrl, payload);
+      const response = await responseHandler(rst, returnRaw);
+      if (response.code === 40001) {
+        this.app.cache.del(await this.app.getCacheKey());
+      }
       console.log('response', response);
-      return responseHandler(response, returnRaw);
+      return response;
     } catch (error) {
       return error.details;
     }

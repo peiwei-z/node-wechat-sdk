@@ -110,7 +110,7 @@ export class WechatController {
 
   @Post('getQRCode')
   async getQRCode(@Body() data: CreateQRCodeOptions) {
-    return this.officialAccountService.qrCode.getQRCode(data);
+    return this.officialAccountService.qrCode.createQRCode(data);
   }
 
   @Post('sendCustomMessage')

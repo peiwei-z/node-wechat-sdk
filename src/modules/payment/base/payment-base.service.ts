@@ -290,7 +290,7 @@ export class PaymentBaseService extends BaseService {
       }
     }
 
-    console.log(ret, "----------response----------");
+    console.log(ret, "-----payment-base-response-----");
     if (response.status !== 200 && ret?.code) {
       return { ...ret, data: null };
     }
